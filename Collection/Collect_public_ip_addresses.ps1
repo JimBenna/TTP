@@ -1,7 +1,8 @@
 # Collect IP Addresses
+# Technic ID : T1134.001
 Clear-Host
 Write-Output "==============================================================================="
-Write-Output "Collects IP Addreses and IP GeoLocation"
+Write-Output "Collects IP Addreses and IP GeoLocation (T1134.001)"
 Write-Output "==============================================================================="
 #
 $IPv4LogFile = \"$env:PUBLIC\exf\pub-ipv4.txt";

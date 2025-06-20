@@ -1,8 +1,8 @@
 # Create Hidden directories
-# Technic ID : T1134.001
+# Technic ID : T1497.003
 Clear-Host
 Write-Output "==============================================================================="
-Write-Output "Create Hidden directories (T1134.001)"
+Write-Output "Create Hidden directories (T1497.003)"
 Write-Output "==============================================================================="
 New-Item -ItemType directory -Path "$env:PUBLIC\exf";
 $hidden_dir=Get-Item "$env:PUBLIC\exf" -Force;
