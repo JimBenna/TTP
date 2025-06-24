@@ -1,4 +1,4 @@
-# Download and install PSTools
+# Download and installs PSTools
 # Technic ID : T1105
 Clear-Host
 Write-Output "==============================================================================="
