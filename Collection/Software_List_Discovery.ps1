@@ -2,7 +2,7 @@
 # Technic ID : T1059.001
 Clear-Host
 Write-Output "==============================================================================="
-Write-Output "Collects IP Addreses and IP GeoLocation (T1059.001)"
+Write-Output "Collects Software List and HotFixes deployend on the host (T1059.001)"
 Write-Output "==============================================================================="
 #
 $Installed = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate;
