@@ -12,7 +12,6 @@ $aes = [System.Security.Cryptography.Aes]::Create()
 $aes.KeySize = 256
 $aes.Key = $key
 $aes.GenerateIV()
-
 $iv = $aes.IV
 
 foreach ($file in Get-ChildItem $TargetFolder)
