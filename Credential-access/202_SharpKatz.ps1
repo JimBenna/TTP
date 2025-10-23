@@ -1,8 +1,8 @@
-# Packet Capture
-# Technic ID : T1040
+# Credential Dump
+# Technic ID : T1003
 Clear-Host
 Write-Output "==============================================================================="
-Write-Output "OS Credential Dumping: LSASS Memory (T1040)"
+Write-Output "OS Credential Dumping: LSASS Memory (T1003)"
 Write-Output "==============================================================================="
 #
 $Katz = "$env:PUBLIC\Toolz\SharpKatz.exe";
