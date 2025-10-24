@@ -18,6 +18,6 @@ if ([System.IO.File]::Exists("$Seatbelt")) {
     exit 0;
 }
 else {
-    Write-Output "The command $Seatbelt does not exists !!!" | Out-File -FilePath "$SeatbeltLogFile";
+    Write-Output "The command $Seatbelt does not exist !!!" | Out-File -FilePath "$SeatbeltLogFile";
     exit 1;
 };
