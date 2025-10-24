@@ -1,5 +1,5 @@
 # Identify Local Users
-# Technic ID : T1518.001
+# Technic ID : T1087.001
 Clear-Host
 Write-Output "==============================================================================="
 Write-Output "Account Discovery: Local Account (T1087.001)"
