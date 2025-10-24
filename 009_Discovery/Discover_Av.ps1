@@ -1,4 +1,4 @@
-# Impair Defenses
+# Software Discovery
 # Technic ID : T1518.001
 Clear-Host
 Write-Output "==============================================================================="
