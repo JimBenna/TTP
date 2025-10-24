@@ -18,4 +18,4 @@ if ([System.IO.File]::Exists("$DestinationFile")) {
 else {
   "The file $DestinationFile does not exists !!!" | Out-File -FilePath "$exf_file";
   exit 1; 
-};
+}

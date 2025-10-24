@@ -28,7 +28,7 @@ namespace Wallpaper {
  }
 }
 "@
-$wallpaperPath = "$Env:UserProfile\\AppData\\Local\\wallpaper.jpg";
+$wallpaperPath = "$Env:UserProfile\AppData\Local\wallpaper.jpg";
 Invoke-WebRequest -Uri "$url" -OutFile "$imgLocation";
 try 
 {
