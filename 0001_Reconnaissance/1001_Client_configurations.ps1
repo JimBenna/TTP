@@ -8,7 +8,7 @@ Write-Output "==================================================================
 $Seatbelt = "$env:PUBLIC\Toolz\Seatbelt.exe";
 $SeatbeltLogFile = "$env:PUBLIC\exf\Seatbelt.log";
 $SeatbeltULogFile = "$env:PUBLIC\exf\Seatbelt-user.log";
-$SeatbeltSLogFile = "$env:PUBLIC\exf\Seatbelt-system.log"      ;
+$SeatbeltSLogFile = "$env:PUBLIC\exf\Seatbelt-system.log";
 if ([System.IO.File]::Exists("$Seatbelt")) {
     Write-Output "GREAT. The command $Seatbelt has been found :-)" | Out-File -FilePath "$SeatbeltLogFile";
     $ServiceCmd = "$Seatbelt -group=user -outputfile=$SeatbeltULogFile";
