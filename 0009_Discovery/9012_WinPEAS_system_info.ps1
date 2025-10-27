@@ -15,6 +15,6 @@ if ([System.IO.File]::Exists("$WinPEAS"))
     } 
 else
     {
-    "The file $WinPEAS does not exists !!!" | Out-File -FilePath "$exf_file";
+   Write-Output "The file $WinPEAS does not exists !!!" | Out-File -FilePath "$exf_file";
     exit 1; 
     };

@@ -14,5 +14,6 @@ if ([System.IO.File]::Exists("$ArchiveFile")) {
     exit 0;
 } 
 else {
-    Write-Host "The file ["$ArchiveFile"] does not exists !!!" >$LogFile; exit 1;
+    Write-Output "The file ["$ArchiveFile"] does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
+    exit 1;
 };
