@@ -16,7 +16,7 @@ On the top of each script I have put a coment to refer [to the technic](https:||
 The scripts ought to be called in the following order.
 
 | Step Number | Directory                | Script                                          | Fully tested | No more update needed |
-| :---------: | :----------------------- | :---------------------------------------------- | :----- -: | :-------------------: |
+|:---------:|:-----------------------|:---------------------------------------------|:------:|:-------------------:|
 | 01          | 0011_Collection          | 1100_Create_Hidden_directories.ps1              |     ❗️     |          👎          |
 | 02          | 0012_Command-And-Control | 1201_Download_archive_with_curl.ps1             |     ❗️     |          👎          |
 | 03          | 0004_Execution           | 4001_Exctract_archive.ps1                       |     ✅    |          👍          |
