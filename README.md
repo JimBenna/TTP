@@ -55,3 +55,15 @@ The scripts ought to be called in the following order.
 | 36          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          |
 | 37          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |
 | 38          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ❗️     |          👎          |
+
+# Usage
+This is pretty simple
+1. Copy the following command lines
+```powershell
+$DestinationFile = "$env:USERPROFILE\pwsh_archive_scripts.zip"
+$DownloadURL="https://github.com/JimBenna/TTP/archive/refs/heads/main.zip"
+Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
+
+```
+
+2. Paste those command lines in a powershell
