@@ -21,13 +21,13 @@ if ([System.IO.File]::Exists("$etl_capture_file"))
     }
      else 
     {
-        "The $etl2pcapng_command does not exists !!!" | Out-File -FilePath "$exf_file\";
+        "The $etl2pcapng_command does not exists !!!" | Out-File -FilePath "$exf_file";
         exit 2; 
     };
 } 
     else 
     {
-        "The file $etl_capture_file does not exists !!!" | Out-File -FilePath "$exf_file\";
+        "The file $etl_capture_file does not exists !!!" | Out-File -FilePath "$exf_file";
         exit 1; 
     };
 
