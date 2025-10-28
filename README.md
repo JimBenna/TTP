@@ -69,7 +69,7 @@ Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
 ```
 
 2. Paste those command lines in a powershell
-3. Those commands will do thee following tasks
-3.1 Create a directory
-3.1 Download the ZIP archiive that contains all the scripts
-3.2 Extracts all the files from the archive
+3. Those commands will do thee following tasks.
+* Create a directory
+* Download the ZIP archiive that contains all the scripts
+* Extracts all the files from the archive
