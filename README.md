@@ -60,10 +60,16 @@ The scripts ought to be called in the following order.
 This is pretty simple
 1. Copy the following command lines
 ```powershell
-$DestinationFile = "$env:USERPROFILE\pwsh_archive_scripts.zip"
+$StorageDir = "$env:PUBLIC\Pwsh_Test_Scripts"
+New-Item -ItemType directory -Path $StorageDir
+$DestinationFile = "$StorageDir\pwsh_archive_scripts.zip"
 $DownloadURL="https://github.com/JimBenna/TTP/archive/refs/heads/main.zip"
 Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
 
 ```
 
 2. Paste those command lines in a powershell
+3. Those commands will do thee following tasks
+3.1 Create a directory
+3.1 Download the ZIP archiive that contains all the scripts
+3.2 Extracts all the files from the archive
