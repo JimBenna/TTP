@@ -57,7 +57,8 @@ The scripts ought to be called in the following order.
 | 38          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ❗️     |          👎          |
 
 # Usage
-This is pretty simple
+Please follow the following steps.
+
 1. Copy the following command lines
 ```powershell
 $StorageDir = "$env:PUBLIC\Pwsh_Test_Scripts"
@@ -65,6 +66,7 @@ New-Item -ItemType directory -Path $StorageDir
 $DestinationFile = "$StorageDir\pwsh_archive_scripts.zip"
 $DownloadURL="https://github.com/JimBenna/TTP/archive/refs/heads/main.zip"
 Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
+Expand-Archive -Path $StorageDir\main.zip -DestinationPath $StorageDir
 
 ```
 
@@ -73,3 +75,5 @@ Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
 * Create a directory
 * Download the ZIP archiive that contains all the scripts
 * Extracts all the files from the archive
+4. Then launch the script called Global_scripts_run.ps1
+* This script reads a file called script_list.txt and launch each script of this text file, and pause for 10 seconds between each command.
