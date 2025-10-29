@@ -17,10 +17,10 @@ The scripts ought to be called in the following order.
 
 | Step Number | Directory                | Script                                          | Fully tested | No more update needed |
 |:---------:|:-----------------------|:---------------------------------------------|:------:|:-------------------:|
-| 01          | 0011_Collection          | 1100_Create_Hidden_directories.ps1              |     ❗️     |          👎          |
-| 02          | 0012_Command-And-Control | 1201_Download_archive_with_curl.ps1             |     ❗️     |          👎          |
+| 01          | 0011_Collection          | 1100_Create_Hidden_directories.ps1              |     ✅    |          👍           |
+| 02          | 0012_Command-And-Control | 1201_Download_archive_with_curl.ps1             |     ✅    |          👍           |
 | 03          | 0004_Execution           | 4001_Exctract_archive.ps1                       |     ✅    |          👍          |
-| 04          | 0007_Defense-Evasion     | 7002_Patch_Amsi_dll.ps1                         |     ❗️     |          👎          |
+| 04          | 0007_Defense-Evasion     | 7002_Patch_Amsi_dll.ps1                         |     ✅    |          👍           |
 | 05          | 0014_Impact              | 1401_Create_RamDisk.ps1                         |     ❗️     |          👎          |
 | 06          | 0007_Defense-Evasion     | 7001_Impair_defenses.ps1                        |     ❗️     |          👎          |
 | 07          | 0001_Reconnaissance      | 1001_Client_configurations.ps1                  |     ✅    |          👎          |
