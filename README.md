@@ -66,7 +66,7 @@ New-Item -ItemType directory -Path $StorageDir
 $DestinationFile = "$StorageDir\pwsh_archive_scripts.zip"
 $DownloadURL="https://github.com/JimBenna/TTP/archive/refs/heads/main.zip"
 Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
-Expand-Archive -Path $StorageDir\main.zip -DestinationPath $StorageDir
+Expand-Archive -Path $DestinationFile -DestinationPath $StorageDir
 
 ```
 
@@ -77,3 +77,12 @@ Expand-Archive -Path $StorageDir\main.zip -DestinationPath $StorageDir
 * Extracts all the files from the archive
 4. Then launch the script called Global_scripts_run.ps1
 * This script reads a file called script_list.txt and launch each script of this text file, and pause for 10 seconds between each command.
+:information_source: You may have to adapt Script Execution policy to allow powershell scripts execution.
+see [Microsoft article](https://learn.microsoft.com/) to get furter details.
+```powershell
+Get-ExecutionPolicy -List
+```
+And to correct this for Current user use 
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -scope CurrentUser
+```
