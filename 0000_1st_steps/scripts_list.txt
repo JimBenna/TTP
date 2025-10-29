@@ -4,7 +4,6 @@
 /0007_Defense-Evasion/7002_Patch_Amsi_dll.ps1
 /0014_Impact/1401_Create_RamDisk.ps1
 /0007_Defense-Evasion/7001_Impair_defenses.ps1
-/0001_Reconnaissance/1001_Client_configurations.ps1
 /0009_Discovery/9001_Discover_Av.ps1
 /0009_Discovery/9002_Discover_Domain_Controllers.ps1
 /0009_Discovery/9003_Discover_domain_trust.ps1
@@ -21,6 +20,7 @@
 /0012_Command-And-Control/1204_Download_Several_Compiled_Attack_Tools.ps1
 /0007_Defense-Evasion/7003_Donwload_Winpeas_Using_Bitsadmin.ps1
 /0007_Defense-Evasion/7004_Donwload_SharPersist_Using_Bitsadmin.ps1
+/0001_Reconnaissance/1001_Client_configurations.ps1
 /0008_Credential-access/8002_SharpKatz.ps1
 /0009_Discovery/9009_Launch_Soron.ps1
 /0009_Discovery/9010_WinPEAS_Browser_info.ps1

@@ -5,8 +5,8 @@ Write-Output "==================================================================
 Write-Output "Collects IP Addreses and IP GeoLocation (T1134.001)"
 Write-Output "==============================================================================="
 #
-$IPv4LogFile = \"$env:PUBLIC\exf\pub-ipv4.txt";
-$IPv6LogFile = \"$env:PUBLIC\exf\pub-ipv6.txt";
+$IPv4LogFile = "$env:PUBLIC\exf\pub-ipv4.txt";
+$IPv6LogFile = "$env:PUBLIC\exf\pub-ipv6.txt";
 try {
     $IPv4Address = Invoke-RestMethod -Uri http://whatismyip.akamai.com/;
 }

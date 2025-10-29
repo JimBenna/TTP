@@ -5,4 +5,5 @@ Write-Output "==================================================================
 Write-Output "Collects all system info command output in a file (T1119)"
 Write-Output "==============================================================================="
 #
-systeminfo /fo list >%PUBLIC%\exf\systeminfo.txt
+$SystemInfoLogFile = "$env:PUBLIC\exf\system_info.txt";
+Start-Process "systeminfo.exe" -ArgumentList "/fo list" -RedirectStandardOutput $SystemInfoLogFile -WindowStyle hidden -Wait

@@ -1,5 +1,5 @@
 $url = "https://raw.githubusercontent.com/JimBenna/fakedocs/main/backgroundransom.jpg";
-$imgLocation = "$env:UserProfile\AppData\Local\wallpaper.jpg";
+$wallpaperPath = "$Env:UserProfile\AppData\Local\wallpaper.jpg";
 $Exf_File = "$env:PUBLIC\exf\Download_back.log";
 
 add-type @"
@@ -28,14 +28,24 @@ namespace Wallpaper {
  }
 }
 "@
-$wallpaperPath = "$Env:UserProfile\AppData\Local\wallpaper.jpg";
-Invoke-WebRequest -Uri "$url" -OutFile "$imgLocation";
-try 
-{
-[Wallpaper.Setter]::SetWallpaper((Convert-Path $wallpaperPath), "Fit");
-Write-Output "The User's WallPaper has been replaced by $imgLocation" | Out-File -FilePath "$Exf_File";
+
+$web = (New-Object System.Net.WebClient);
+$result = $web.DownloadFile("$url", "$wallpaperPath");
+if ([System.IO.File]::Exists("$wallpaperPath")) {
+    Write-Output "The file Image has been successfully downloaded from $url and stored to $wallpaperPath" | Out-File -FilePath "$Exf_File" -Append;
+    try {
+        [Wallpaper.Setter]::SetWallpaper((Convert-Path $wallpaperPath), "Fit");
+        Write-Output "The User's WallPaper has been replaced by $wallpaperPath" | Out-File -FilePath "$Exf_File"  -Append;
+        exit 0;
+    }
+    catch {
+        Write-Output "Cannot replace the background image with $wallpaperPath" | Out-File -FilePath "$Exf_File"  -Append;
+    }
+
 }
-catch
-{
-Write-Output "Cannot download $url" | Out-File -FilePath "$Exf_File";
-}
+else {
+    Write-Output "ERROR : The wallPaperImage has not been downloaded" | Out-File -FilePath "$Exf_File";
+    exit 1;
+};
+
+
