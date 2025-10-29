@@ -77,6 +77,7 @@ Expand-Archive -Path $DestinationFile -DestinationPath $StorageDir
 * Extracts all the files from the archive
 4. Then launch the script called Global_scripts_run.ps1
 * This script reads a file called script_list.txt and launch each script of this text file, and pause for 10 seconds between each command.
+
 :information_source: You may have to adapt Script Execution policy to allow powershell scripts execution.
 see [Microsoft article](https://learn.microsoft.com/) to get furter details.
 ```powershell
