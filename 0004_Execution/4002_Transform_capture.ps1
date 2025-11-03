@@ -8,7 +8,7 @@ Write-Output "==================================================================
 $etl_capture_file = "$env:PUBLIC\exf\capture.etl";
 $pcap_file = "$env:PUBLIC\exf\capture.pcap";
 $etl2pcapng_command = "$env:PUBLIC\Toolz\etl2pcapng.exe"
-$exf_file = "$env:PUBLIC\exf\capture.log";
+$exf_file = "$env:PUBLIC\exf\capture.txt";
 if ([System.IO.File]::Exists("$etl_capture_file")) 
 {
     certutil -urlcache -f https://github.com/microsoft/etl2pcapng/releases/latest/download/etl2pcapng.exe "$env:PUBLIC\Toolz\etl2pcapng.exe";

@@ -7,7 +7,7 @@ Write-Output "==================================================================
 #
 $ArchiveFile = "$env:USERPROFILE\Documents\fake_Documents.zip";
 $DestinationDirectory = "$env:USERPROFILE\Documents\";
-$LogFile = "$env:PUBLIC\exf\extract_zip.log";
+$LogFile = "$env:PUBLIC\exf\extract_zip.txt";
 if ([System.IO.File]::Exists("$ArchiveFile")) {
     Add-Type -Assembly 'System.IO.Compression.FileSystem';
     [System.IO.Compression.ZipFile]::ExtractToDirectory("$ArchiveFile", "$DestinationDirectory");
