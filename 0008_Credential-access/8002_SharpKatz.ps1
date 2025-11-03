@@ -11,10 +11,10 @@ if ([System.IO.File]::Exists("$katz"))
     {
         Write-Output "GREAT. The command $Katz has been found :-)" | Out-File -FilePath "$KatzLogFile";
         $ServiceCmd = "$Katz";
-        Invoke-Expression "$ServiceCmd" | Out-File -FilePath" $KatzLogFile" -Append;
+        Invoke-Expression "$ServiceCmd" | Out-File -FilePath" $KatzLogFile" -Encoding ascii -Append;
         exit 0;
     }
     else {
-        Write-Output "The command $Katz does not exists !!!" | Out-File -FilePath "$KatzLogFile";
+        Write-Output "The command $Katz does not exists !!!" | Out-File -FilePath "$KatzLogFile" -Encoding ascii -Append;
         exit 1;
       };

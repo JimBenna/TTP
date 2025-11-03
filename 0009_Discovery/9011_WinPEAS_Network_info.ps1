@@ -6,7 +6,7 @@ Write-Output "Browser bookmark Discovery (T1217)"
 Write-Output "==============================================================================="
 #
 $WinPEAS = "$env:PUBLIC\Toolz\winPEASany_ofs.exe";
-$exf_file ="$env:PUBLIC\exf\PEAS_browserinfo.log"; 
+$exf_file ="$env:PUBLIC\exf\PEAS_browserinfo.txt"; 
 if ([System.IO.File]::Exists("$WinPEAS"))
     {
         $CompleteCommand= "$WinPEAS"+" quiet browserinfo "+"log=$exf_file"; 
@@ -15,6 +15,6 @@ if ([System.IO.File]::Exists("$WinPEAS"))
     } 
 else
     {
-    Write-Output "The file $WinPEAS does not exists !!!" | Out-File -FilePath "$exf_file";
+    Write-Output "The file $WinPEAS does not exists !!!" | Out-File -FilePath "$exf_file" -Encoding ascii -Append;
     exit 1; 
     };

