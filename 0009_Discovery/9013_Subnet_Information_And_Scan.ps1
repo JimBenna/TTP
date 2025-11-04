@@ -1,0 +1,144 @@
+# Network config Discovery
+# Technic ID : T1016
+Clear-Host
+Write-Output "==============================================================================="
+Write-Output "System Network Configuration Discovery (T1016)"
+Write-Output "==============================================================================="
+#
+$LogFile = "$env:PUBLIC\exf\network_gather_scan.txt"; 
+$DestinationDirectory = "$env:PUBLIC\Toolz\fping_x64_4.2"
+$BinaryFile = "fping.exe"
+$FullPathBinary = "$DestinationDirectory" + "\" + "$BinaryFile"
+# Put connected Interfaces in an Array
+$ResultIpIf = Get-NetIPInterface | Where-Object { $_.ConnectionState -eq 'Connected' }
+#Write-Output "Result :" $ResultIpIf
+$ConnectedInterfaceArray = @()
+foreach ($Node in $ResultIpIf) {
+    $ConnectedInterfaceArray += [pscustomobject]@{
+        IfId     = $Node.ifIndex
+        IfAlias  = $Node.InterfaceAlias
+        IfIPType = $Node.AddressFamily
+        IfDHCP   = $Node.Dhcp
+    }
+}
+
+
+
+$ResultIpAdd = Get-NetIPAddress | Where-Object { $_.AddressState -eq 'Preferred' }
+#Write-Output "Result :" $ResultIpAdd
+$IPInterfaceArray = @()
+foreach ($Node in $ResultIpAdd) {
+    $IPInterfaceArray += [pscustomobject]@{
+        IfId        = $Node.InterfaceIndex
+        IfAlias     = $Node.InterfaceAlias
+        IfIPType    = $Node.AddressFamily
+        IfIPAddress = $Node.IPAddress
+        IfPrefix    = $Node.PrefixLength
+
+    }
+}
+
+
+$ResultNet = Get-NetAdapter | Where-Object { $_.Status -eq 'Up' }
+#Write-Output "Result :" $ResultNet
+$NetInterfaceArray = @()
+foreach ($Node in $ResultNet) {
+    $NetInterfaceArray += [pscustomobject]@{
+        IfId         = $Node.ifIndex
+        IfName       = $Node.Name
+        IfMacAddress = $Node.MacAddress
+        IfLinkSpeed  = $Node.LinkSpeed
+
+
+    }
+}
+
+$NetIpv4Array=Get-NetIPConfiguration |
+    Where-Object { $_.NetAdapter.Status -eq "Up" } |
+    ForEach-Object {
+        $interface = $_
+        # IPv4
+        $interface.IPv4Address | ForEach-Object {
+            $ip = $_.IPAddress
+            $prefix = $_.PrefixLength
+            $mask = [System.Net.IPAddress]::Parse(
+                (0..3 | ForEach-Object {
+                    if ($_ -lt $prefix / 8) { [byte]255 }
+                    elseif ($prefix -gt $_ * 8) { [byte]([Math]::Pow(2, 8 - ($prefix % 8)) - 1) }
+                    else { [byte]0 }
+                }) -join '.'
+            )
+            $ipBytes = [System.Net.IPAddress]::Parse($ip).GetAddressBytes()
+            $maskBytes = $mask.GetAddressBytes()
+            $networkBytes = for ($i = 0; $i -lt 4; $i++) {
+                [byte]($ipBytes[$i] -band $maskBytes[$i])
+            }
+            $network = [System.Net.IPAddress]::new($networkBytes).ToString()
+            [PSCustomObject]@{
+                IfId      = $interface.NetAdapter.InterfaceIndex
+                Interface = $interface.NetAdapter.InterfaceDescription
+                Type      = "IPv4"
+                IfAddress =  $ip
+                Prefix    = $prefix
+                NetMask   = $mask
+                Subnet    = "$network/$prefix"
+
+            }
+        }
+        # IPv6
+#        $interface.IPv6Address | Where-Object { $_.IsLinkLocal -eq $false } | ForEach-Object {
+#            [PSCustomObject]@{
+#                IfId      = $interface.NetAdapter.InterfaceIndex
+#                Interface = $interface.NetAdapter.InterfaceDescription
+#                Type      = "IPv6"
+#                IfAddress =  $interface.NetAdapter.IPv6Address
+#                Subnet    = "$($_.IPAddress)/$($_.PrefixLength)"
+#            }
+#        }
+    } 
+    $NetIpv4Array | Format-Table
+#    $NetIpv6Array | Format-Table
+
+
+#$ConnectedInterfaceArray|Format-Table
+#$IPInterfaceArray|format-table
+#$NetInterfaceArray
+
+# FUsion sur IfIndex et AddressFamily
+$FusionnedArray = foreach ($IfIndexConnected in $ConnectedInterfaceArray) {
+    $match = $IPInterfaceArray | Where-Object {
+        $_.IfId -eq $IfIndexConnected.IfId -and $_.IfIPType -eq $IfIndexConnected.IfIPType
+    }
+    if ($match) {
+        [PSCustomObject]@{
+            IfIndex     = $IfIndexConnected.IfId
+            IfIPFamily  = $IfIndexConnected.IfIPType
+            IfName      = $IfIndexConnected.IfAlias
+            IfIpAddress = $match.IfIPAddress
+            IfPrefix    = $match.IfPrefix
+        }
+    }
+}
+$SortedArray = $FusionnedArray | Sort-Object IfIndex
+$SortedArray | Format-Table -AutoSize | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+$SortedNetArray = $NetInterfaceArray | Sort-Object IfIndex
+$SortedNetArray | Format-Table -AutoSize | Out-File -FilePath "$LogFile" -Encoding ascii -Append 
+$SortedNetIpv4Array = $NetIpv4Array | Sort-Object IfIndex
+$SortedNetIpv4Array | Format-Table -AutoSize | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+
+#Launch subnets scans
+if ([System.IO.File]::Exists("$FullPathBinary")) {
+    Write-Output "The file [$BinaryFile] exists in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
+    $SortedNetIpv4Array | ForEach-Object {
+        "We are ready to scan the following subnet : $($_.Subnet) with the interface named $($_.Interface)"| Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
+               $Log_Scan="$env:PUBLIC\exf\$Scan_"+"$($_.ifAddress)"+".txt"
+               
+               Start-Process -Filepath $FullPathBinary -ArgumentList "-4 -a -q -s -R -g $($_.Subnet)" -RedirectStandardOutput $Log_Scan -WindowStyle Hidden -Wait
+
+    }
+    exit 0;
+} 
+else {
+    Write-Output "The file [$BinaryFile] can not be found in  $DestinationDirectory !!!" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
+    exit 1;
+}

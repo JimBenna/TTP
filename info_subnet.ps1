@@ -47,3 +47,67 @@ Get-NetIPInterface -AddressFamily IPv4 |
     Select-Object InterfaceAlias, ifIndex
 
 fping -g <subnet> -a -q
+fping -4 -g 172.16.16.0/24 -a -q -s -R
+
+
+# Put connected Interfaces in an Array
+ $ResultIpIf = Get-NetIPInterface | Where-Object { $_.ConnectionState -eq 'Connected' }
+ Write-Output "Result :" $ResultIpIf
+ $ConnectedInterfaceArray = @()
+    foreach ($Node in $ResultIpIf) {
+       $ConnectedInterfaceArray += [pscustomobject]@{
+            IfId            = $Node.ifIndex
+            IfAlias         = $Node.InterfaceAlias
+            IfIPType        = $Node.AddressFamily
+            IfDHCP          = $Node.Dhcp
+        }
+    }
+
+
+
+    $ResultIpAdd = Get-NetIPAddress | Where-Object { $_.AddressState -eq 'Preferred' }
+ #Write-Output "Result :" $ResultIpAdd
+ $IPInterfaceArray = @()
+    foreach ($Node in $ResultIpAdd) {
+       $IPInterfaceArray += [pscustomobject]@{
+            IfId            = $Node.InterfaceIndex
+            IfAlias         = $Node.InterfaceAlias
+            IfIPType        = $Node.AddressFamily
+            IfIPAddress     = $Node.IPAddress
+            IfPrefix        = $Node.PrefixLength
+
+        }
+    }
+$IPInterfaceArray
+
+$ResultNet = Get-NetAdapter | Where-Object { $_.Status -eq 'Up' }
+ #Write-Output "Result :" $ResultNet
+ $NetInterfaceArray = @()
+    foreach ($Node in $ResultNet) {
+        $NetInterfaceArray += [pscustomobject]@{
+            IfId              = $Node.ifIndex
+            IfName         = $Node.Name
+            IfMacAddress         = $Node.MacAddress
+            IfLinkSpeed          = $Node.LinkSpeed
+
+
+        }
+    }
+ $NetInterfaceArray
+#Extract InterfaceID from Array of connect Interfaces
+ $SearchedIfId = $ConnectedInterfaceArray | ForEach-Object {$_.IfId}
+  # $SearchedIfId
+
+  #Search common information in both tables.
+
+  $FusionnedArray = foreach ($FoundIndex in $SearchedIfId)
+  {
+    $found = $IPInterfaceArray | Where-Object {$_.IfId -eq $FoundIndex} & $_
+    if ($found)
+    {
+        $found
+    }
+    else {
+    write-host "$FoundIndex has not been found in $IPInterfaceArray.IfId"
+     }
+    }
