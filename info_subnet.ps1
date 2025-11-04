@@ -45,3 +45,5 @@ Get-NetIPConfiguration
 Get-NetIPInterface -AddressFamily IPv4 |
     Where-Object { $_.ConnectionState -eq 'Connected' } |
     Select-Object InterfaceAlias, ifIndex
+
+fping -g <subnet> -a -q
