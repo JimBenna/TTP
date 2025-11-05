@@ -130,11 +130,10 @@ $SortedNetIpv4Array | Format-Table -AutoSize | Out-File -FilePath "$LogFile" -En
 if ([System.IO.File]::Exists("$FullPathBinary")) {
     Write-Output "The file [$BinaryFile] exists in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
     $SortedNetIpv4Array | ForEach-Object {
-        "We are ready to scan the following subnet : $($_.Subnet) with the interface named $($_.Interface)"| Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
-               $Log_Scan="$env:PUBLIC\exf\$Scan_"+"$($_.ifAddress)"+".txt"
-               
-               Start-Process -Filepath $FullPathBinary -ArgumentList "-4 -a -q -s -R -g $($_.Subnet)" -RedirectStandardOutput $Log_Scan -WindowStyle Hidden -Wait
-
+               $Log_Scan="$env:PUBLIC\exf\Scan_with_if_"+"$($_.ifAddress)"+".txt"
+               $CliParameters = "-4 -q -A -a -R -g " + "$($_.subnet)"
+               Start-Process -Filepath $FullPathBinary -ArgumentList $CliParameters -RedirectStandardOutput $Log_Scan -WindowStyle Hidden -Wait
+               Write-Output "The ouptut file [$Log_Scan] has been created in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
     }
     exit 0;
 } 
