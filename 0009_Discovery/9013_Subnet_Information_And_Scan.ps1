@@ -14,6 +14,7 @@ $PSPingBinary = "psping64.exe"
 $ExfDirectory = "$env:PUBLIC\exf\"
 $FileNameMask = "Scan_with_if_"
 $FileNameExtension = ".txt"
+$TcpPortsToScan = @("22", "80", "443", "135", "137", "445");
 # Put connected Interfaces in an Array
 $ResultIpIf = Get-NetIPInterface | Where-Object { $_.ConnectionState -eq 'Connected' }
 #Write-Output "Result :" $ResultIpIf
@@ -26,8 +27,6 @@ foreach ($Node in $ResultIpIf) {
         IfDHCP   = $Node.Dhcp
     }
 }
-
-
 
 $ResultIpAdd = Get-NetIPAddress | Where-Object { $_.AddressState -eq 'Preferred' }
 #Write-Output "Result :" $ResultIpAdd
@@ -152,14 +151,21 @@ if ([System.IO.File]::Exists("$FullPathBinary")) {
         $TotalLines = 0
         Get-ChildItem -Path "$ExfDirectory" -Filter "$FileNameMask*$FileNameExtension" | ForEach-Object {
             $TotalFiles++
-            Write-Output "`Analyze file named : $($_.Name)" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
-    
+            Write-Output "Analyze file named : $($_.Name)" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
             $FileLinesNumber = Get-Content $_.FullName
             $TotalLines += $FileLinesNumber.Count
-    
             $FileLinesNumber | ForEach-Object -Begin { $LineNumber = 1 } -Process {
                 # Traitement avec numérotation
-                Write-Output " Aanlyzing line [$LineNumber] : Scanning  $_" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
+                $HostScanned = $_
+                Write-Output " Line [$LineNumber] contains IP : [$HostScanned]" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
+                foreach ($ScannedPort in $TcpPortsToScan) {
+                    $ScanHostPort = $HostScanned + ":" + $ScannedPort
+                    $ScanCommandFullPath = $PSToolsDirectory + "\" + $PSPingBinary
+                    Write-Output " --------------------     Scanning host $ScanHostPort --------------------" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
+                    $LaunchScan = "$ScanCommandFullPath" + " -accepteula -nobanner $ScanHostPort -t -q";
+                    Invoke-Expression $LaunchScan | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
+                }
+                Write-Output " -------------------- " | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
                 $LineNumber++
             }
     
