@@ -7,7 +7,7 @@ Write-Output "==================================================================
 #
 $DownloadLogFile = "$env:PUBLIC\exf\Tools_Download.log";
 $DestinationPath = "$env:PUBLIC\Toolz\";
-$SoftToDownload = @("Seatbelt.exe","Rubeus.exe","SauronEye.exe","SharpKatz.exe","BetterSafetyKatz.exe","Moriarty.exe","SharpEDRChecker.exe","Snaffler.exe");
+$SoftToDownload = @("Seatbelt.exe","Rubeus.exe","SauronEye.exe","SharpKatz.exe","BetterSafetyKatz.exe","Moriarty.exe","SharpEDRChecker.exe","Snaffler.exe","SharpUp.exe");
 foreach ($Tool in $SoftToDownload) 
 {
     Write-host $Tool;
