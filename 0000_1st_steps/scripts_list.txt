@@ -24,9 +24,10 @@
 /0001_Reconnaissance/1001_Client_configurations.ps1
 /0008_Credential-access/8002_SharpKatz.ps1
 /0009_Discovery/9009_Launch_Soron.ps1
-/0009_Discovery/9010_WinPEAS_Browser_info.ps1
-/0009_Discovery/9011_WinPEAS_Network_info.ps1
+/0009_Discovery/9011_WinPEAS_Browser_info.ps1
+/0009_Discovery/9010_WinPEAS_Network_info.ps1
 /0009_Discovery/9012_WinPEAS_system_info.ps1
+/0009_Discovery/9013_Subnet_Information_And_Scan.ps1
 /0008_Credential-access/8001_Packet_capture.ps1
 /0004_Execution/4002_Transform_capture.ps1
 /0005_Persistence/5001_Add_Scheduled_task.ps1

@@ -6,7 +6,7 @@ Write-Output "System Network Configuration Discovery (T1016)"
 Write-Output "==============================================================================="
 #
 $WinPEAS = "$env:PUBLIC\Toolz\winPEASany_ofs.exe";
-$exf_file ="$env:PUBLIC\exf\PEAS_networkinfo.txt"; 
+$exf_file ="$env:PUBLIC\exf\PEAS_Network_Info.txt"; 
 if ([System.IO.File]::Exists("$WinPEAS"))
     {
         $CompleteCommand= "$WinPEAS"+" quiet networkinfo "+"log=$exf_file"; 

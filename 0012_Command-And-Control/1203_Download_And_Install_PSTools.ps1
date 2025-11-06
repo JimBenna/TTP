@@ -20,7 +20,7 @@ try {
 
     if ([System.IO.File]::Exists("$Full_Destination")) {
         Add-Type -Assembly 'System.IO.Compression.FileSystem';
-        [System.IO.Compression.ZipFile]::ExtractToDirectory("$ArchiveFile", "$DestinationDirectory");
+        [System.IO.Compression.ZipFile]::ExtractToDirectory("$Full_Destination", "$DestinationDirectory");
         Write-Output "The file [$ArchiveFile] has been extracted to  $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
         Get-ChildItem -Path $DestinationDirectory | Out-File -FilePath $LogFile -Encoding ascii -Append
         exit 0;
@@ -32,6 +32,6 @@ try {
 
 }
 catch {
-    Write-Output "The download of [$ArchiveFile] has failed : $($_.Exception.Message)" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
+    Write-Output "Error : $($_.Exception.Message)" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
     exit 1;   
 }

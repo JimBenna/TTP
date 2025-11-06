@@ -5,7 +5,7 @@ Write-Output "==================================================================
 Write-Output "Downloads several compiled attack tools (T1105)"
 Write-Output "==============================================================================="
 #
-$DownloadLogFile = "$env:PUBLIC\exf\Tools_Download.log";
+$DownloadLogFile = "$env:PUBLIC\exf\Tools_Download.txt";
 $DestinationPath = "$env:PUBLIC\Toolz\";
 $SoftToDownload = @("Seatbelt.exe","Rubeus.exe","SauronEye.exe","SharpKatz.exe","BetterSafetyKatz.exe","Moriarty.exe","SharpEDRChecker.exe","Snaffler.exe","SharpUp.exe");
 foreach ($Tool in $SoftToDownload) 
