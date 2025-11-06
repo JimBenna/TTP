@@ -1,6 +1,6 @@
 # Purpose
 
-A bunch of powershell scripts to test some Technics tactics and Procedure.
+A bunch of powershell scripts to test some Technics Tactics & Procedures.
 
 The purpose of those scripts are to have a several steps testing purpose that simulates an attack.
 
@@ -74,10 +74,9 @@ Expand-Archive -Path $DestinationFile -DestinationPath $StorageDir👎
 2. Paste those command lines in a powershell
 3. Those commands will do thee following tasks.
 * Create a directory
-* Download the ZIP archiive that contains all the scripts
+* Download the ZIP archive that contains all the scripts
 * Extracts all the files from the archive
-4. Then launch the script called Global_scripts_run.ps1
-* This script reads a file called script_list.txt and launch each script of this text file, and pause for 10 seconds between each command.
+
 
 :information_source: You may have to adapt Script Execution policy to allow powershell scripts execution.
 see [Microsoft article](https://learn.microsoft.com/) to get furter details.
