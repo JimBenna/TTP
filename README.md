@@ -45,17 +45,17 @@ The scripts ought to be called in the following order.
 | 26          | 0009_Discovery           | 9010_WinPEAS_Browser_info.ps1                   |     ✅    |          👍          | |
 | 27          | 0009_Discovery           | 9011_WinPEAS_Network_info.ps1                   |     ✅    |          👍          | |
 | 28          | 0009_Discovery           | 9012_WinPEAS_system_info.ps1                    |     ✅    |          👍          | |
-| 28          | 0009_Discovery           | 9013_Subnet_Information_And_Scan.ps1            |     ✅    |          👍          | |
-| 29          | 0008_Credential-access   | 8001_Packet_capture.ps1                         |     ✅    |          👎          | |
-| 30          | 0004_Execution           | 4002_Transform_capture.ps1                      |     ✅    |          👍          | |
-| 31          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
-| 32          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
-| 33          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
-| 34          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
-| 35          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
-| 36          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
-| 37          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |Not working |
-| 38          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
+| 29          | 0009_Discovery           | 9013_Subnet_Information_And_Scan.ps1            |     ✅    |          👍          | |
+| 30          | 0008_Credential-access   | 8001_Packet_capture.ps1                         |     ✅    |          👎          | |
+| 31          | 0004_Execution           | 4002_Transform_capture.ps1                      |     ✅    |          👍          | |
+| 32          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
+| 33          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
+| 34          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
+| 35          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
+| 36          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
+| 37          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
+| 38          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |Not working |
+| 39          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
 
 # Usage
 Please follow the following steps.
