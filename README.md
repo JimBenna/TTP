@@ -6,7 +6,7 @@ The purpose of those scripts are to have a several steps testing purpose that si
 
 # Reference
 
-The Mitre | ATT&CK lists [13 tactics](https://attack.mitre.org|tactics/enterprise) up to now,
+The Mitre  ATT&CK lists [13 tactics](https://attack.mitre.org/tactics/enterprise) up to now,
 I have then created such numbers of directories to store the scripts, according to the tactics I have written script for.
 
 On the top of each script I have put a coment to refer [to the technic](https://attack.mitre.org) it ought to refer to.
