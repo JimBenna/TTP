@@ -34,6 +34,7 @@
 /0009_Discovery/9013_Subnet_Information_And_Scan.ps1
 /0008_Credential-access/8001_Packet_capture.ps1
 /0004_Execution/4002_Transform_capture.ps1
+/0004_Execution/4003_Purple_Exec.ps1
 /0005_Persistence/5001_Add_Scheduled_task.ps1
 /0005_Persistence/5003_Add_service.ps1
 /0005_Persistence/5002_Add_Reg_Key.ps1

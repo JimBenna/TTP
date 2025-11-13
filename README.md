@@ -51,15 +51,16 @@ The scripts ought to be called in the following order.
 | 32          | 0009_Discovery           | 9013_Subnet_Information_And_Scan.ps1            |     ✅    |          👍          | |
 | 33          | 0008_Credential-access   | 8001_Packet_capture.ps1                         |     ✅    |          👎          | |
 | 34          | 0004_Execution           | 4002_Transform_capture.ps1                      |     ✅    |          👍          | |
-| 35          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
-| 36          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
-| 37          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
-| 38          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
-| 39          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
-| 40          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
-| 41          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |Not working |
-| 42          | 0014_Impact              | 1405_Download_note.ps1                          |     ✅    |          👍          | |
-| 43          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
+| 35          | 0004_Execution           | 4003_Purple_Exec.ps1                            |     ✅    |          👍          | |
+| 36          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
+| 37          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
+| 38          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
+| 39          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
+| 40          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
+| 41          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
+| 42          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |Not working |
+| 43          | 0014_Impact              | 1405_Download_note.ps1                          |     ✅    |          👍          | |
+| 44          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
 
 # Usage
 Please follow the following steps.
