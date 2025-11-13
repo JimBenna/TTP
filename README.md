@@ -56,8 +56,8 @@ The scripts ought to be called in the following order.
 | 37          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
 | 38          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
 | 39          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
-| 40          | 0005_Persistence         | 5004_Purple_persist.ps1                         |     ❗️     |          👎          | |
-| 41          | 0007_Defense-Evasion     | 7005_Purple_evasion.ps1                        |     ✅    |          👍          | |
+| 40          | 0005_Persistence         | 5004_Purple_persist.ps1                         |     ✅    |          👍          | |
+| 41          | 0007_Defense-Evasion     | 7005_Purple_evasion.ps1                         |     ✅    |          👍          | |
 | 42          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
 | 43          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
 | 44          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
