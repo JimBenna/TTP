@@ -33,6 +33,7 @@
 /0009_Discovery/9012_WinPEAS_system_info.ps1
 /0009_Discovery/9013_Subnet_Information_And_Scan.ps1
 /0008_Credential-access/8001_Packet_capture.ps1
+/0008_Credential-access/8004_Purple_credz_access.ps1 
 /0004_Execution/4002_Transform_capture.ps1
 /0004_Execution/4003_Purple_Exec.ps1
 /0005_Persistence/5001_Add_Scheduled_task.ps1

@@ -1,17 +1,19 @@
-# Emulates Persistence tactics with PurpleShark
+# Emulates Defense Evasion tactics with PurpleShark
 Clear-Host
 Write-Output "==============================================================================="
 Write-Output "Executes the following commands to emulate tactics : "
-Write-Output "T1053.005 Scheduled Task/Job: Scheduled Task"
-Write-Output "T1136.001 - Create Account: Local Account"
-Write-Output "T1543.003 - Create or Modify System Process: Windows Service"
-Write-Output "T1547.001 - Boot or Logon Autostart Execution: Registry Run Keys"
-Write-Output "T1546.003 - Event Triggered Execution: Windows Management Instrumentation Event Subscription"
+Write-Output "T1220 XSL - Script Processing"
+Write-Output "T1218.003 - Signed Binary Proxy Execution: CMSTP"
+Write-Output "T1218.005 - Signed Binary Proxy Execution: Mshta"
+Write-Output "T1140     - Deobfuscate/Decode Files or Information"
+Write-Output "T1218.004 - Signed Binary Proxy Execution: InstallUtil"
+Write-Output "T1218.009 - Signed Binary Proxy Execution: Regsvcs/Regasm"
+Write-Output "T1218.010 - Signed Binary Proxy Execution: Regsvr32"
 Write-Output "==============================================================================="
 #
 $PurpleTactics = "$env:PUBLIC\Toolz\purplesharp.exe";
-$PurpleLogFile = "$env:PUBLIC\exf\Purple_Persist.txt";
-$Tactic = @("T1053.005", "T1136.001", "T1543.003", "T1547.001", "T1546.003");
+$PurpleLogFile = "$env:PUBLIC\exf\Purple_Evasion.txt";
+$Tactic = @("T1053.005", "T1218.003", "T1218.005", "T1140", "T1218.009", "T1218.010","T1218.004");
 
 if ([System.IO.File]::Exists("$PurpleTactics")) {
     Write-Output "GREAT. The command $PurpleTactics has been found :-)" | Out-File -FilePath "$PurpleLogFile"-Encoding ascii -Append;
