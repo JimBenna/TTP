@@ -55,12 +55,13 @@ The scripts ought to be called in the following order.
 | 36          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
 | 37          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
 | 38          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
-| 39          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
-| 40          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
-| 41          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
-| 42          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |Not working |
-| 43          | 0014_Impact              | 1405_Download_note.ps1                          |     ✅    |          👍          | |
-| 44          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
+| 39          | 0005_Persistence         | 5004_Purple_persist.ps1                         |     ❗️     |          👎          | |
+| 40          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
+| 41          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
+| 42          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
+| 43          | 0014_Impact              | 1402_Remove_RamDisk.ps1                         |     ❗️     |          👎          |Not working |
+| 44          | 0014_Impact              | 1405_Download_note.ps1                          |     ✅    |          👍          | |
+| 45          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
 
 # Usage
 Please follow the following steps.

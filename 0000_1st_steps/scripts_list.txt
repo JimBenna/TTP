@@ -38,6 +38,7 @@
 /0005_Persistence/5001_Add_Scheduled_task.ps1
 /0005_Persistence/5003_Add_service.ps1
 /0005_Persistence/5002_Add_Reg_Key.ps1
+/0005_Persistence/5004_Purple_persist.ps1
 /0011_Collection/1104_Compress_Directory_Content.ps1
 /0013_Exfiltration/1301_Exfiltration_using_scp.ps1
 /0013_Exfiltration/1302_Exfiltration_over_ftp.ps1
