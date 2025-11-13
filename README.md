@@ -87,7 +87,7 @@ Expand-Archive -Path $DestinationFile -DestinationPath $StorageDir👎
 
 
 :information_source: You may have to adapt Script Execution policy to allow powershell scripts execution.
-see [Microsoft article](https://learn.microsoft.com/) to get furter details.
+see [Microsoft article](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1) to get furter details.
 ```powershell
 Get-ExecutionPolicy -List
 ```
