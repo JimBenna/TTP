@@ -37,7 +37,7 @@ The scripts ought to be called in the following order.
 | 18          | 0012_Command-And-Control | 1202_Download_Mimikatz.ps1                      |     ✅    |          👎          | |
 | 19          | 0012_Command-And-Control | 1203_Download_And_Install_PSTools.ps1           |     ✅    |          👍          | |
 | 20          | 0012_Command-And-Control | 1204_Download_Several_Compiled_Attack_Tools.ps1 |     ✅    |          👍          | |
-| 21          | 0007_Defense-Evasion     | 7003_Donwload_Winpeas_Using_Bitsadmin.ps1       |     ❗️     |          👎          | Needs to use Pwsh |
+| 21          | 0007_Defense-Evasion     | 7003_Donwload_Winpeas_Using_Bitsadmin.ps1       |     ✅    |          👍          | |
 | 22          | 0007_Defense-Evasion     | 7004_Donwload_SharPersist_Using_Bitsadmin.ps1   |     ✅    |          👍          | |
 | 23          | 0001_Reconnaissance      | 1001_Client_configurations.ps1                  |     ✅    |          👍          | |
 | 24          | 0008_Credential-access   | 8002_SharpKatz.ps1                              |     ✅    |          👎          | |
@@ -53,7 +53,7 @@ The scripts ought to be called in the following order.
 | 34          | 0008_Credential-access   | 8004_Purple_credz_access.ps1                    |     ✅    |          👍          | |
 | 35          | 0004_Execution           | 4002_Transform_capture.ps1                      |     ✅    |          👍          | |
 | 36          | 0004_Execution           | 4003_Purple_Exec.ps1                            |     ✅    |          👍          | |
-| 37          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ❗️     |          👎          | |
+| 37          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ✅    |          👍          | |
 | 38          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
 | 39          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
 | 40          | 0005_Persistence         | 5004_Purple_persist.ps1                         |     ✅    |          👍          | |
