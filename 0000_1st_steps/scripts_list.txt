@@ -23,9 +23,11 @@
 /0007_Defense-Evasion/7004_Donwload_SharPersist_Using_Bitsadmin.ps1
 /0001_Reconnaissance/1001_Client_configurations.ps1
 /0008_Credential-access/8002_SharpKatz.ps1
+/0008_Credential-access/8003_Better_SafetyKatz.ps1
 /0009_Discovery/9009_Launch_Soron.ps1
 /0009_Discovery/9014_Launch_moriarty.ps1
 /0009_Discovery/9015_Launch_sharpEDRchecker.ps1
+/0009_Discovery/9016_Launch_sharpKatz.ps1
 /0009_Discovery/9011_WinPEAS_Browser_info.ps1
 /0009_Discovery/9010_WinPEAS_Network_info.ps1
 /0009_Discovery/9012_WinPEAS_system_info.ps1
