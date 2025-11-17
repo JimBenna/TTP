@@ -16,6 +16,6 @@ if ([System.IO.File]::Exists("$BetterSafetyKatz"))
     }
 else 
     {
-        Write-Output "The command $BetterSafetyKatz does not exists !!!" | Out-File -FilePath "$KatzLogFile" -Encoding ascii -Append;
+        Write-Output "The file $BetterSafetyKatz does not exists !!!" | Out-File -FilePath "$KatzLogFile" -Encoding ascii -Append;
         exit 1;
     };
