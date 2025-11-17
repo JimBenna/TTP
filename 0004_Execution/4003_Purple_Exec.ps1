@@ -29,6 +29,6 @@ if ([System.IO.File]::Exists("$PurpleTactics")) {
     exit 0;
 }
 else {
-    Write-Output "The command $SharpKatz does not exists !!!" | Out-File -FilePath "$SharpKatzLogFile" -Encoding ascii -Append;
+    Write-Output "The file $PurpleTactics does not exists !!!" | Out-File -FilePath "$PurpleLogFile" -Encoding ascii -Append;
     exit 1;
 };
