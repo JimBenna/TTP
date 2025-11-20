@@ -73,3 +73,252 @@ foreach ($file in $files) {
 }
 
 ################ [ SCRIPT ] ################
+
+################ [ TESTS ] ################
+
+# Fonction pour chiffrer un fichier avec AES
+function Encrypt-FileAES {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$InputFile,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$OutputFile,
+        
+        [Parameter(Mandatory=$true)]
+        [byte[]]$Key,
+        
+        [Parameter(Mandatory=$true)]
+        [byte[]]$IV
+    )
+    
+    try {
+        # Créer l'objet AES
+        $aes = [System.Security.Cryptography.Aes]::Create()
+        $aes.Key = $Key
+        $aes.IV = $IV
+        
+        # Créer l'encrypteur
+        $encryptor = $aes.CreateEncryptor()
+        
+        # Lire le fichier source
+        $inputBytes = [System.IO.File]::ReadAllBytes($InputFile)
+        
+        # Chiffrer les données
+        $encryptedBytes = $encryptor.TransformFinalBlock($inputBytes, 0, $inputBytes.Length)
+        
+        # Écrire le fichier chiffré (IV + données chiffrées)
+        $outputBytes = $IV + $encryptedBytes
+        [System.IO.File]::WriteAllBytes($OutputFile, $outputBytes)
+        
+        # Nettoyer
+        $encryptor.Dispose()
+        $aes.Dispose()
+        
+        Write-Host "✓ Fichier chiffré: $InputFile -> $OutputFile" -ForegroundColor Green
+        return $true
+    }
+    catch {
+        Write-Error "Erreur lors du chiffrement de $InputFile : $($_.Exception.Message)"
+        return $false
+    }
+}
+
+# Fonction pour générer une clé à partir d'un mot de passe
+function Get-KeyFromPassword {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Password,
+        
+        [byte[]]$Salt = @(0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76),
+        
+        [int]$Iterations = 10000
+    )
+    
+    $rfc2898 = New-Object System.Security.Cryptography.Rfc2898DeriveBytes($Password, $Salt, $Iterations)
+    return $rfc2898.GetBytes(32) # 256 bits pour AES-256
+}
+
+# Script principal
+function Encrypt-DirectoryFiles {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$DirectoryPath,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$Password,
+        
+        [string]$FileFilter = "*.*",
+        
+        [switch]$Recursive,
+        
+        [switch]$DeleteOriginal,
+        
+        [string]$OutputSuffix = ".encrypted"
+    )
+    
+    # Vérifier que le répertoire existe
+    if (-not (Test-Path $DirectoryPath)) {
+        Write-Error "Le répertoire '$DirectoryPath' n'existe pas."
+        return
+    }
+    
+    # Générer la clé à partir du mot de passe
+    Write-Host "Génération de la clé de chiffrement..." -ForegroundColor Yellow
+    $key = Get-KeyFromPassword -Password $Password
+    
+    # Obtenir la liste des fichiers
+    $searchOption = if ($Recursive) { "AllDirectories" } else { "TopDirectoryOnly" }
+    
+    try {
+        $files = Get-ChildItem -Path $DirectoryPath -Filter $FileFilter -File -Recurse:$Recursive
+        
+        if ($files.Count -eq 0) {
+            Write-Warning "Aucun fichier trouvé avec le filtre '$FileFilter' dans '$DirectoryPath'"
+            return
+        }
+        
+        Write-Host "Fichiers à chiffrer: $($files.Count)" -ForegroundColor Cyan
+        
+        $successCount = 0
+        $errorCount = 0
+        
+        foreach ($file in $files) {
+            # Ignorer les fichiers déjà chiffrés
+            if ($file.Name.EndsWith($OutputSuffix)) {
+                Write-Host "Ignoré (déjà chiffré): $($file.Name)" -ForegroundColor Gray
+                continue
+            }
+            
+            # Générer un IV unique pour chaque fichier
+            $aes = [System.Security.Cryptography.Aes]::Create()
+            $iv = $aes.IV
+            $aes.Dispose()
+            
+            # Définir le nom du fichier de sortie
+            $outputFile = $file.FullName + $OutputSuffix
+            
+            # Chiffrer le fichier
+            if (Encrypt-FileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key -IV $iv) {
+                $successCount++
+                
+                # Supprimer l'original si demandé
+                if ($DeleteOriginal) {
+                    try {
+                        Remove-Item $file.FullName -Force
+                        Write-Host "  → Fichier original supprimé" -ForegroundColor Yellow
+                    }
+                    catch {
+                        Write-Warning "Impossible de supprimer le fichier original: $($_.Exception.Message)"
+                    }
+                }
+            }
+            else {
+                $errorCount++
+            }
+        }
+        
+        Write-Host "`n=== RÉSUMÉ ===" -ForegroundColor Magenta
+        Write-Host "Fichiers chiffrés avec succès: $successCount" -ForegroundColor Green
+        Write-Host "Erreurs: $errorCount" -ForegroundColor Red
+        
+    }
+    catch {
+        Write-Error "Erreur lors du traitement du répertoire: $($_.Exception.Message)"
+    }
+}
+
+# Exemple d'utilisation
+# Encrypt-DirectoryFiles -DirectoryPath "C:\MonDossier" -Password "MonMotDePasseSecurise123!" -FileFilter "*.txt" -Recursive
+
+
+
+
+# Fonction pour déchiffrer un fichier
+function Decrypt-FileAES {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$InputFile,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$OutputFile,
+        
+        [Parameter(Mandatory=$true)]
+        [byte[]]$Key
+    )
+    
+    try {
+        # Lire le fichier chiffré
+        $encryptedData = [System.IO.File]::ReadAllBytes($InputFile)
+        
+        # Extraire l'IV (16 premiers octets)
+        $iv = $encryptedData[0..15]
+        $cipherText = $encryptedData[16..($encryptedData.Length - 1)]
+        
+        # Créer l'objet AES
+        $aes = [System.Security.Cryptography.Aes]::Create()
+        $aes.Key = $Key
+        $aes.IV = $iv
+        
+        # Créer le décrypteur
+        $decryptor = $aes.CreateDecryptor()
+        
+        # Déchiffrer les données
+        $decryptedBytes = $decryptor.TransformFinalBlock($cipherText, 0, $cipherText.Length)
+        
+        # Écrire le fichier déchiffré
+        [System.IO.File]::WriteAllBytes($OutputFile, $decryptedBytes)
+        
+        # Nettoyer
+        $decryptor.Dispose()
+        $aes.Dispose()
+        
+        Write-Host "✓ Fichier déchiffré: $InputFile -> $OutputFile" -ForegroundColor Green
+        return $true
+    }
+    catch {
+        Write-Error "Erreur lors du déchiffrement de $InputFile : $($_.Exception.Message)"
+        return $false
+    }
+}
+
+# Fonction pour déchiffrer un répertoire
+function Decrypt-DirectoryFiles {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$DirectoryPath,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$Password,
+        
+        [string]$EncryptedSuffix = ".encrypted",
+        
+        [switch]$Recursive,
+        
+        [switch]$DeleteEncrypted
+    )
+    
+    $key = Get-KeyFromPassword -Password $Password
+    $files = Get-ChildItem -Path $DirectoryPath -Filter "*$EncryptedSuffix" -File -Recurse:$Recursive
+    
+    foreach ($file in $files) {
+        $outputFile = $file.FullName -replace [regex]::Escape($EncryptedSuffix) + '$', ''
+        
+        if (Decrypt-FileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key) {
+            if ($DeleteEncrypted) {
+                Remove-Item $file.FullName -Force
+                Write-Host "  → Fichier chiffré supprimé" -ForegroundColor Yellow
+            }
+        }
+    }
+}
+
+# Chiffrer tous les fichiers .txt dans un dossier
+Encrypt-DirectoryFiles -DirectoryPath "C:\MesDonnees" -Password "MotDePasseSecurise123!" -FileFilter "*.txt"
+
+# Chiffrer récursivement tous les fichiers et supprimer les originaux
+Encrypt-DirectoryFiles -DirectoryPath "C:\MesDonnees" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
+
+# Déchiffrer les fichiers
+Decrypt-DirectoryFiles -DirectoryPath "C:\MesDonnees" -Password "MotDePasseSecurise123!" -Recursive
+
