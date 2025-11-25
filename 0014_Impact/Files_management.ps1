@@ -77,7 +77,7 @@ foreach ($file in $files) {
 ################ [ TESTS ] ################
 
 # Fonction pour chiffrer un fichier avec AES
-function Encrypt-FileAES {
+function EncryptFileAES {
     param(
         [Parameter(Mandatory=$true)]
         [string]$InputFile,
@@ -93,43 +93,42 @@ function Encrypt-FileAES {
     )
     
     try {
-        # Créer l'objet AES
+        # Create AES object
         $aes = [System.Security.Cryptography.Aes]::Create()
         $aes.Key = $Key
         $aes.IV = $IV
         
-        # Créer l'encrypteur
+        # Create Encryptor
         $encryptor = $aes.CreateEncryptor()
         
-        # Lire le fichier source
+        # Read Source file
         $inputBytes = [System.IO.File]::ReadAllBytes($InputFile)
         
-        # Chiffrer les données
+        # Encrypt File content
         $encryptedBytes = $encryptor.TransformFinalBlock($inputBytes, 0, $inputBytes.Length)
         
-        # Écrire le fichier chiffré (IV + données chiffrées)
+        # Write encrypted file (IV + encrypted data)
         $outputBytes = $IV + $encryptedBytes
         [System.IO.File]::WriteAllBytes($OutputFile, $outputBytes)
         
-        # Nettoyer
+        # Cleanup process
         $encryptor.Dispose()
         $aes.Dispose()
         
-        Write-Host "✓ Fichier chiffré: $InputFile -> $OutputFile" -ForegroundColor Green
+        Write-Host "Successfully Encrypted File : $InputFile -> $OutputFile" | Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append
         return $true
     }
     catch {
-        Write-Error "Erreur lors du chiffrement de $InputFile : $($_.Exception.Message)"
+        Write-Host "Encryption failure for file : $InputFile error code : $($_.Exception.Message)"| Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append
         return $false
     }
 }
 
 # Fonction pour générer une clé à partir d'un mot de passe
-function Get-KeyFromPassword {
+function GetKeyFromPassword {
     param(
         [Parameter(Mandatory=$true)]
-        [string]$Password,
-        
+        [String]$Password,
         [byte[]]$Salt = @(0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76),
         
         [int]$Iterations = 10000
@@ -140,7 +139,7 @@ function Get-KeyFromPassword {
 }
 
 # Script principal
-function Encrypt-DirectoryFiles {
+function EncryptFiles {
     param(
         [Parameter(Mandatory=$true)]
         [string]$DirectoryPath,
@@ -154,18 +153,18 @@ function Encrypt-DirectoryFiles {
         
         [switch]$DeleteOriginal,
         
-        [string]$OutputSuffix = ".encrypted"
+        [string]$OutputSuffix = ".$NewExtension"
     )
     
     # Vérifier que le répertoire existe
     if (-not (Test-Path $DirectoryPath)) {
-        Write-Error "Le répertoire '$DirectoryPath' n'existe pas."
+        Write-Error "Directory :  '$DirectoryPath' does not exist or can not be accessed."
         return
     }
     
     # Générer la clé à partir du mot de passe
-    Write-Host "Génération de la clé de chiffrement..." -ForegroundColor Yellow
-    $key = Get-KeyFromPassword -Password $Password
+    Write-Host "Comuting encryption key ..." -ForegroundColor Yellow
+    $key = GetKeyFromPassword -Password $Password
     
     # Obtenir la liste des fichiers
     $searchOption = if ($Recursive) { "AllDirectories" } else { "TopDirectoryOnly" }
@@ -174,42 +173,42 @@ function Encrypt-DirectoryFiles {
         $files = Get-ChildItem -Path $DirectoryPath -Filter $FileFilter -File -Recurse:$Recursive
         
         if ($files.Count -eq 0) {
-            Write-Warning "Aucun fichier trouvé avec le filtre '$FileFilter' dans '$DirectoryPath'"
+            Write-Warning "No file has been found with the selected extension : '$FileFilter' in directory : '$DirectoryPath'"
             return
         }
         
-        Write-Host "Fichiers à chiffrer: $($files.Count)" -ForegroundColor Cyan
+        Write-Host "Number of files to encrypt : $($files.Count)" -ForegroundColor Cyan
         
         $successCount = 0
         $errorCount = 0
         
         foreach ($file in $files) {
-            # Ignorer les fichiers déjà chiffrés
+            # Ignore already encrypted files.
             if ($file.Name.EndsWith($OutputSuffix)) {
-                Write-Host "Ignoré (déjà chiffré): $($file.Name)" -ForegroundColor Gray
+                Write-Host "File $($file.Name) is already encrypted." -ForegroundColor Gray
                 continue
             }
             
-            # Générer un IV unique pour chaque fichier
+            # Compute an IV for each file
             $aes = [System.Security.Cryptography.Aes]::Create()
             $iv = $aes.IV
             $aes.Dispose()
             
-            # Définir le nom du fichier de sortie
+            # Defines output file name.
             $outputFile = $file.FullName + $OutputSuffix
             
-            # Chiffrer le fichier
+            # Encrypt File
             if (Encrypt-FileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key -IV $iv) {
                 $successCount++
                 
-                # Supprimer l'original si demandé
+                # Remove orignal file if mentioned.
                 if ($DeleteOriginal) {
                     try {
                         Remove-Item $file.FullName -Force
-                        Write-Host "  → Fichier original supprimé" -ForegroundColor Yellow
+                        Write-Host "  ---> Original file has been deleted." -ForegroundColor Yellow
                     }
                     catch {
-                        Write-Warning "Impossible de supprimer le fichier original: $($_.Exception.Message)"
+                        Write-Warning "Unable to delete orignal file?=. Error :  $($_.Exception.Message)"
                     }
                 }
             }
@@ -219,23 +218,20 @@ function Encrypt-DirectoryFiles {
         }
         
         Write-Host "`n=== RÉSUMÉ ===" -ForegroundColor Magenta
-        Write-Host "Fichiers chiffrés avec succès: $successCount" -ForegroundColor Green
-        Write-Host "Erreurs: $errorCount" -ForegroundColor Red
+        Write-Host "Number of files encrypted                                  : $successCount" -ForegroundColor Green
+        Write-Host "Number of Errors encountered during the encryption process : $errorCount" -ForegroundColor Red
         
     }
     catch {
-        Write-Error "Erreur lors du traitement du répertoire: $($_.Exception.Message)"
+        Write-Error "Error occured during directory management : $($_.Exception.Message)"
     }
 }
 
 # Exemple d'utilisation
 # Encrypt-DirectoryFiles -DirectoryPath "C:\MonDossier" -Password "MonMotDePasseSecurise123!" -FileFilter "*.txt" -Recursive
 
-
-
-
-# Fonction pour déchiffrer un fichier
-function Decrypt-FileAES {
+# Fonction to decrypt a file.
+function DecryptFileAES {
     param(
         [Parameter(Mandatory=$true)]
         [string]$InputFile,
@@ -248,42 +244,44 @@ function Decrypt-FileAES {
     )
     
     try {
-        # Lire le fichier chiffré
+        # Read encrypted file
         $encryptedData = [System.IO.File]::ReadAllBytes($InputFile)
         
-        # Extraire l'IV (16 premiers octets)
+        # Extract IV (16 first bytes)
         $iv = $encryptedData[0..15]
         $cipherText = $encryptedData[16..($encryptedData.Length - 1)]
         
-        # Créer l'objet AES
+        # Compute AES object
         $aes = [System.Security.Cryptography.Aes]::Create()
         $aes.Key = $Key
         $aes.IV = $iv
         
-        # Créer le décrypteur
+        # Decrytpor creation
         $decryptor = $aes.CreateDecryptor()
         
-        # Déchiffrer les données
+        # Decrypt data
         $decryptedBytes = $decryptor.TransformFinalBlock($cipherText, 0, $cipherText.Length)
         
-        # Écrire le fichier déchiffré
+        # Write decrypted file
         [System.IO.File]::WriteAllBytes($OutputFile, $decryptedBytes)
         
-        # Nettoyer
+        # Cleanup
         $decryptor.Dispose()
         $aes.Dispose()
         
-        Write-Host "✓ Fichier déchiffré: $InputFile -> $OutputFile" -ForegroundColor Green
+        Write-Host "Decrypted file : $InputFile -> $OutputFile" -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Error "Erreur lors du déchiffrement de $InputFile : $($_.Exception.Message)"
+        Write-Error "Error while decrypting file $InputFile : $($_.Exception.Message)"
         return $false
     }
 }
 
-# Fonction pour déchiffrer un répertoire
-function Decrypt-DirectoryFiles {
+
+
+# Function to decrypt a directory
+function DecryptDirectoryFiles {
     param(
         [Parameter(Mandatory=$true)]
         [string]$DirectoryPath,
@@ -291,7 +289,7 @@ function Decrypt-DirectoryFiles {
         [Parameter(Mandatory=$true)]
         [string]$Password,
         
-        [string]$EncryptedSuffix = ".encrypted",
+        [string]$EncryptedSuffix = ".$NewExtension",
         
         [switch]$Recursive,
         
@@ -312,13 +310,11 @@ function Decrypt-DirectoryFiles {
         }
     }
 }
-
 # Chiffrer tous les fichiers .txt dans un dossier
-Encrypt-DirectoryFiles -DirectoryPath "C:\MesDonnees" -Password "MotDePasseSecurise123!" -FileFilter "*.txt"
+EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -FileFilter "*.txt"
 
 # Chiffrer récursivement tous les fichiers et supprimer les originaux
-Encrypt-DirectoryFiles -DirectoryPath "C:\MesDonnees" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
+EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
 
 # Déchiffrer les fichiers
-Decrypt-DirectoryFiles -DirectoryPath "C:\MesDonnees" -Password "MotDePasseSecurise123!" -Recursive
-
+DecryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive
