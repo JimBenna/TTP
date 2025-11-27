@@ -89,15 +89,15 @@ function EncryptFileAES {
         [byte[]]$Key,
         
         [Parameter(Mandatory=$true)]
-        [byte[]]$IV
+        [byte[]]$IVParameter
     )
     
     try {
         # Create AES object
         $aes = [System.Security.Cryptography.Aes]::Create()
         $aes.Key = $Key
-        $aes.IV = $IV
-        
+        $aes.IV = $IVParameter
+                     Write-Host "IV bytes : $IvParameter" -ForegroundColor Gray
         # Create Encryptor
         $encryptor = $aes.CreateEncryptor()
         
@@ -108,7 +108,7 @@ function EncryptFileAES {
         $encryptedBytes = $encryptor.TransformFinalBlock($inputBytes, 0, $inputBytes.Length)
         
         # Write encrypted file (IV + encrypted data)
-        $outputBytes = $IV + $encryptedBytes
+        $outputBytes = $IVParameter + $encryptedBytes
         [System.IO.File]::WriteAllBytes($OutputFile, $outputBytes)
         
         # Cleanup process
@@ -144,8 +144,9 @@ function EncryptFiles {
         [Parameter(Mandatory=$true)]
         [string]$DirectoryPath,
         
-        [Parameter(Mandatory=$true)]
-        [string]$Password,
+    #    [Parameter(Mandatory=$true)]
+        [string]$Password = $EncryptionKey,
+
         
         [string]$FileFilter = "*.*",
         
@@ -153,7 +154,7 @@ function EncryptFiles {
         
         [switch]$DeleteOriginal,
         
-        [string]$OutputSuffix = ".$NewExtension"
+        [string]$OutputSuffix = "."+$NewExtension
     )
     
     # Vérifier que le répertoire existe
@@ -163,7 +164,7 @@ function EncryptFiles {
     }
     
     # Générer la clé à partir du mot de passe
-    Write-Host "Comuting encryption key ..." -ForegroundColor Yellow
+    Write-Host "Computing encryption key ..." -ForegroundColor Yellow
     $key = GetKeyFromPassword -Password $Password
     
     # Obtenir la liste des fichiers
@@ -191,21 +192,21 @@ function EncryptFiles {
             
             # Compute an IV for each file
             $aes = [System.Security.Cryptography.Aes]::Create()
-            $iv = $aes.IV
+            $IvAES = $aes.IV
             $aes.Dispose()
             
             # Defines output file name.
             $outputFile = $file.FullName + $OutputSuffix
-            
+             Write-Host "IV bytes : $IvAES" -ForegroundColor Gray
             # Encrypt File
-            if (Encrypt-FileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key -IV $iv) {
+            if (EncryptFileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key -IVParameter $IvAES) {
                 $successCount++
                 
                 # Remove orignal file if mentioned.
                 if ($DeleteOriginal) {
                     try {
                         Remove-Item $file.FullName -Force
-                        Write-Host "  ---> Original file has been deleted." -ForegroundColor Yellow
+                        Write-Host "  ---> Original file" $file.FullName" has been deleted." -ForegroundColor Yellow
                     }
                     catch {
                         Write-Warning "Unable to delete orignal file?=. Error :  $($_.Exception.Message)"
@@ -281,40 +282,49 @@ function DecryptFileAES {
 
 
 # Function to decrypt a directory
-function DecryptDirectoryFiles {
+function DecryptFiles {
     param(
         [Parameter(Mandatory=$true)]
         [string]$DirectoryPath,
         
-        [Parameter(Mandatory=$true)]
-        [string]$Password,
-        
-        [string]$EncryptedSuffix = ".$NewExtension",
+        #[Parameter(Mandatory=$true)]
+        [string]$Password = $EncryptionKey,
+        $MatchEndingExtension = "\."+$NewExtension+"$",       
+        [string]$EncryptedSuffix =  "."+$NewExtension,
         
         [switch]$Recursive,
         
         [switch]$DeleteEncrypted
     )
     
-    $key = Get-KeyFromPassword -Password $Password
+    $key = GetKeyFromPassword -Password $Password
     $files = Get-ChildItem -Path $DirectoryPath -Filter "*$EncryptedSuffix" -File -Recurse:$Recursive
     
     foreach ($file in $files) {
-        $outputFile = $file.FullName -replace [regex]::Escape($EncryptedSuffix) + '$', ''
         
-        if (Decrypt-FileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key) {
+        $outputFile = $file.FullName -replace $MatchEndingExtension, ''
+
+        
+        if (DecryptFileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key) {
             if ($DeleteEncrypted) {
                 Remove-Item $file.FullName -Force
-                Write-Host "  → Fichier chiffré supprimé" -ForegroundColor Yellow
+                Write-Host "     Encrypted file "$file.FullName" has been deleted" -ForegroundColor Yellow
             }
         }
     }
 }
 # Chiffrer tous les fichiers .txt dans un dossier
-EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -FileFilter "*.txt"
+#EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -FileFilter "*.txt"
 
 # Chiffrer récursivement tous les fichiers et supprimer les originaux
-EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
+#EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
 
 # Déchiffrer les fichiers
-DecryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive
+#DecryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive
+
+#EncryptFiles -DirectoryPath "C:\xxxx" -FileFilter "*.txt"
+
+#EncryptFiles -DirectoryPath "C:\xxxx" -FileFilter "*.pdf" -DeleteOriginal
+
+# DecryptFiles -DirectoryPath "C:\xxxx" -Recursive 
+# DecryptFiles -DirectoryPath "C:\xxxx" -Recursive -DeleteEncrypted
