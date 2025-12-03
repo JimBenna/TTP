@@ -46,3 +46,4 @@
 /0014_Impact/1402_Remove_RamDisk.ps1
 /0014_Impact/1405_Donwload_note.ps1
 /0014_Impact/1403_Change_BackGround.ps1
+/0014_Impact/1406_Files_Encrypt_or_Decrypt.ps1

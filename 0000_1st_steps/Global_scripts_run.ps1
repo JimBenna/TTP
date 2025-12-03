@@ -5,7 +5,7 @@ Write-Output "==================================================================
 Write-Output "This scripts read a file and launch every scripts with a time wait between each script"
 Write-Output "======================================================================================"
 #
-$InputFile="script_list.txt"
+$InputFile="scripts_list.txt"
 $CommandsArray = Get-Content -Path $InputFile
 
 # Loops all commands that have been stored in the array
