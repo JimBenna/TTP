@@ -7,16 +7,17 @@ Write-Output "This scripts read a file and launch every scripts with a time wait
 Write-Output "======================================================================================"
 #
 $InputFile= $PSScriptRoot+"\scripts_list.txt"
-$parentDirectory = Split-Path -Path $PSScriptRoot -Parent
+$ParentDirectory = Split-Path -Path $PSScriptRoot -Parent
 $CommandsArray = Get-Content -Path $InputFile
 $PauseTimerInSeconds = "4"
 
 # Loops all commands that have been stored in the array
 foreach ($Command in $CommandsArray)
 {
-    Write-Output "Runing script : $Command"
+    $FullAccessScript=$ParentDirectory$Command
+    Write-Output "Runing script : $FullAccessScript"
     write-output "Parent Directory : $parentDirectory"
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $Command" -WindowStyle Hidden -Wait
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $FullAccessScript" -WindowStyle Hidden -Wait
     Write-Output "Waiting $PauseTimerInSeconds before launching anhother script ..."
     Write-output "`n"
     Start-Sleep -Seconds $PauseTimerInSeconds
