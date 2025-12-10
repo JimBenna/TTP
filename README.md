@@ -23,10 +23,10 @@ The scripts ought to be called in the following order.
 | 04          | 0007_Defense-Evasion     | 7002_Patch_Amsi_dll.ps1                         |     ✅    |          👍          | |
 | 05          | 0014_Impact              | 1401_Create_RamDisk.ps1                         |     ❗️     |          👎          |  Don't work at all |
 | 06          | 0007_Defense-Evasion     | 7001_Impair_defenses.ps1                        |     ✅    |          👍          | |
-| 07          | 0009_Discovery           | 9001_Discover_Av.ps1                            |     ❗️     |          👎          |Does not work |
+| 07          | 0009_Discovery           | 9001_Discover_Av.ps1                            |     ✅     |          👍          | |
 | 08          | 0009_Discovery           | 9002_Discover_Domain_Controllers.ps1            |     ✅    |          👎          | Upgrade needed |
 | 09          | 0009_Discovery           | 9003_Discover_domain_trust.ps1                  |     ✅    |          👎          | More logs needed |
-| 10          | 0009_Discovery           | 9004_Identify_Host_fw.ps1                       |     ❗️     |          👎          | Does not work |
+| 10          | 0009_Discovery           | 9004_Identify_Host_fw.ps1                       |     ✅     |          👍          | |
 | 11          | 0009_Discovery           | 9005_Identify_local_users.ps1                   |     ✅    |          👍          | |
 | 12          | 0009_Discovery           | 9006_Network_Information_Gathering.ps1          |     ✅    |          👎          | More logs needed |
 | 13          | 0009_Discovery           | 9007_Network_Shares_discovery.ps1               |     ✅    |          👍          | |
@@ -95,3 +95,5 @@ And to correct this for Current user use
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -scope CurrentUser
 ```
+
+Thanks Ercole for your help on correcting scripts.
