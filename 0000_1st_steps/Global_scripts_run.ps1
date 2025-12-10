@@ -14,7 +14,7 @@ $PauseTimerInSeconds = "4"
 # Loops all commands that have been stored in the array
 foreach ($Command in $CommandsArray)
 {
-    $FullAccessScript=$ParentDirectory$Command
+    $FullAccessScript=$ParentDirectory+$Command
     Write-Output "Runing script : $FullAccessScript"
     write-output "Parent Directory : $parentDirectory"
     Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $FullAccessScript" -WindowStyle Hidden -Wait
