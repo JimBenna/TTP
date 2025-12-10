@@ -75,7 +75,7 @@ New-Item -ItemType directory -Path $StorageDir
 $DestinationFile = "$StorageDir\pwsh_archive_scripts.zip"
 $DownloadURL="https://github.com/JimBenna/TTP/archive/refs/heads/main.zip"
 Invoke-WebRequest -Uri $DownloadURL -OutFile $DestinationFile
-Expand-Archive -Path $DestinationFile -DestinationPath $StorageDir👎
+Expand-Archive -Path $DestinationFile -DestinationPath $StorageDir
 
 ```
 
