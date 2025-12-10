@@ -16,7 +16,7 @@ foreach ($Command in $CommandsArray)
 {
     Write-Output "Runing script : $Command"
     write-output "Parent Directory : $parentDirectory"
-#    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $Command" -WindowStyle Hidden -Wait
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $Command" -WindowStyle Hidden -Wait
     Write-Output "Waiting $PauseTimerInSeconds before launching anhother script ..."
     Write-output "`n"
     Start-Sleep -Seconds $PauseTimerInSeconds
