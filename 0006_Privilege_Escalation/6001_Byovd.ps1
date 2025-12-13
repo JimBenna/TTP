@@ -12,11 +12,11 @@ $DownloadUrl = "https://github.com/magicsword-io/LOLDrivers/raw/main/drivers"
 
 $VulnDriversArray = @(
     [PSCustomObject]@{
-        UID ="89ed5be7ea83c01d0de33d3519944aa5";
+        UID     = "89ed5be7ea83c01d0de33d3519944aa5";
         DrvName = "windivert.sys"
     },
-        [PSCustomObject]@{
-        UID ="32365e3e64d28cc94756ac9a09b67f06";
+    [PSCustomObject]@{
+        UID     = "32365e3e64d28cc94756ac9a09b67f06";
         DrvName = "amigendrv64.sys"
     }
 )
@@ -25,26 +25,26 @@ $VulnDriversArray = @(
 function DownloadFiles {
     param(
         [Parameter(Mandatory = $false)]
-        [string]$DownloadFrom=$DownloadUrl,
+        [string]$DownloadFrom = $DownloadUrl,
         [Parameter(Mandatory = $true)]
         [string]$DonwnloadedFileName,
         [Parameter(Mandatory = $true)]
         [string]$StorageFileName,
         [Parameter(Mandatory = $false)]
-        [string]$StorageDirectory=$StoragePath
-        )
-$WhatToDownload = $DownloadFrom+"/"+$DonwnloadedFileName+".bin"
-$Full_Destination = $StorageDirectory+"\"+$StorageFileName
-$CompleteCommand = "Invoke-WebRequest -Uri " + "$WhatToDownload" + " -outfile " + "$Full_Destination";
-try {
+        [string]$StorageDirectory = $StoragePath
+    )
+    $WhatToDownload = $DownloadFrom + "/" + $DonwnloadedFileName + ".bin"
+    $Full_Destination = $StorageDirectory + "\" + $StorageFileName
+    $CompleteCommand = "Invoke-WebRequest -Uri " + "$WhatToDownload" + " -outfile " + "$Full_Destination";
+    try {
     
-    Invoke-Expression  "$CompleteCommand";
-    Write-Output "Successfully Downloaded file $DownloadedFileName from $DownloadFrom" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;     
-    if ([System.IO.File]::Exists("$Full_Destination")) {
-        Write-Output "Successfully Stored file $StorageFileName in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
-        # Check downloaded file MD5 summ
-        $Md5Check = (Get-FileHash -Path $Full_Destination -Algorithm MD5).Hash
-        # Compare CheckSumms
+        Invoke-Expression  "$CompleteCommand";
+        Write-Output "Successfully Downloaded file $DownloadedFileName from $DownloadFrom" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;     
+        if ([System.IO.File]::Exists("$Full_Destination")) {
+            Write-Output "Successfully Stored file $StorageFileName in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
+            # Check downloaded file MD5 summ
+            $Md5Check = (Get-FileHash -Path $Full_Destination -Algorithm MD5).Hash
+            # Compare CheckSumms
             if ($Md5Check -eq $DonwnloadedFileName) {
                 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 Write-Output " [ MD5SUM checks OK ] Stored File name : $StorageFileName" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
@@ -52,7 +52,8 @@ try {
                 Write-Output "                     Computed md5 summ : $Md5Check" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 return                                                
-            } else {
+            }
+            else {
                 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append                
                 Write-Output "[ ERROR ] $StorageFileName : somme SHA256 incorrecte." | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 Write-Output "             Expected summ : $DownloadedFileName" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
@@ -60,31 +61,31 @@ try {
                 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 exit 3;
             }
-    } 
-    else {
-        Write-Output "The file $Full_Destination does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
-        exit 2;
-    };
+        } 
+        else {
+            Write-Output "The file $Full_Destination does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
+            exit 2;
+        };
 
-}
-catch {
-    Write-Output "Error : $($_.Exception.Message)" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
-    exit 1;   
-}
+    }
+    catch {
+        Write-Output "Error : $($_.Exception.Message)" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
+        exit 1;   
+    }
 }
 
-Function InstallDriver{
+Function InstallDriver {
     param (
         [Parameter(Mandatory = $true)]
         [string]$DriverToInstall,
         [Parameter(Mandatory = $false)]
-        [sting]$StoredDriverDir=$StoragePath
+        [sting]$StoredDriverDir = $StoragePath
     )
-# sc.exe create amigendrv64.sys binPath=C:\windows\temp\amigendrv64.sys type=kernel && sc.exe start amigendrv64.sys
-        $InstallDriver = "sc.exe create "+$DriverToInstall+" binPath="+$StoredDriverDir+"\"+$DriverToInstall+" type=kernel"
-        Invoke-Expression $InstallDriver  | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
-        $StartDriver = "sc.exe start "+$DriverToInstall
-        Invoke-Expression $StartDriver  | Out-File -FilePath "$LogFile" -Encoding utf8 -Append        
+    # sc.exe create amigendrv64.sys binPath=C:\windows\temp\amigendrv64.sys type=kernel && sc.exe start amigendrv64.sys
+    $InstallDriver = "sc.exe create " + $DriverToInstall + " binPath=" + $StoredDriverDir + "\" + $DriverToInstall + " type=kernel"
+    Invoke-Expression $InstallDriver  | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
+    $StartDriver = "sc.exe start " + $DriverToInstall
+    Invoke-Expression $StartDriver  | Out-File -FilePath "$LogFile" -Encoding utf8 -Append        
 
 }
 
@@ -97,8 +98,7 @@ Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
 
 # Loop to manage each entry in the array.
 
-foreach ($line in $VulnDriversArray) 
-{
+foreach ($line in $VulnDriversArray) {
     $Source = $line.UID
     $Destination = $ligne.DrvName
     DownloadFiles -DonwnloadedFileName $Source -StorageFileName $Destination
