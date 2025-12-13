@@ -9,7 +9,6 @@ $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 $StoragePath = "$env:PUBLIC\Toolz";
 $LogFile = "$env:PUBLIC\exf\Vuln_Drivers.txt";
 $DownloadUrl = "https://github.com/magicsword-io/LOLDrivers/raw/main/drivers"
-
 $VulnDriversArray = @(
     [PSCustomObject]@{
         UID     = "89ed5be7ea83c01d0de33d3519944aa5";
