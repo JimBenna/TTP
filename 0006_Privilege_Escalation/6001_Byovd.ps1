@@ -73,7 +73,6 @@ function DownloadFiles {
         exit 1;   
     }
 }
-
 Function InstallDriver {
     param (
         [Parameter(Mandatory = $true)]
@@ -88,16 +87,13 @@ Function InstallDriver {
     Invoke-Expression $StartDriver  | Out-File -FilePath "$LogFile" -Encoding utf8 -Append        
 
 }
-
 ################ [ MAIN BODY ] ################
 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Force
 Write-output "-------------------------------------"  | Out-File -FilePath $LogFile -Encoding utf8 -Append
 Write-output "Script : $PSCommandPath has been launched on $TimeStamp" | Out-File -FilePath $LogFile -Encoding utf8 -Append
 Write-output "-------------------------------------"  | Out-File -FilePath $LogFile -Encoding utf8 -Append
 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
-
 # Loop to manage each entry in the array.
-
 foreach ($line in $VulnDriversArray) {
     $Source = $line.UID
     $Destination = $ligne.DrvName
