@@ -2,6 +2,7 @@
 \0012_Command-And-Control\1201_Download_archive_with_curl.ps1
 \0004_Execution\4001_Exctract_archive.ps1
 \0007_Defense-Evasion\7002_Patch_Amsi_dll.ps1
+\0006_Privilege_Escalation\6002_Download_Use_SpoolFool.ps1
 \0014_Impact\1401_Create_RamDisk.ps1
 \0007_Defense-Evasion\7001_Impair_defenses.ps1
 \0009_Discovery\9001_Discover_Av.ps1
