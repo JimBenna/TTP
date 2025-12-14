@@ -12,6 +12,7 @@
 \0009_Discovery\9006_Network_Information_Gathering.ps1
 \0009_Discovery\9007_Network_Shares_discovery.ps1
 \0009_Discovery\9008_Process_discovery.ps1
+\0009_Discovery\9016_Download_Launch_PrivescCheck.ps1
 \0011_Collection\1101_Collect_public_ip_addresses.ps1
 \0011_Collection\1102_SystemInfo.ps1
 \0011_Collection\1103_Software_List_Discovery.ps1
@@ -46,7 +47,6 @@
 \0013_Exfiltration\1301_Exfiltration_using_scp.ps1
 \0013_Exfiltration\1302_Exfiltration_over_ftp.ps1
 \0007_Defense-Evasion\7006_CreateISO_From_Dir.ps1
-\0014_Impact\1402_Remove_RamDisk.ps1
 \0014_Impact\1405_Donwload_note.ps1
 \0014_Impact\1403_Change_BackGround.ps1
 \0014_Impact\1406_Files_Encrypt_or_Decrypt.ps1

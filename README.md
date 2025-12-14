@@ -35,37 +35,38 @@ The scripts ought to be called in the following order.
 | 16          | 0011_Collection          | 1102_SystemInfo.ps1                             |     ✅    |          👍          | |
 | 17          | 0011_Collection          | 1103_Software_List_Discovery.ps1                |     ✅    |          👍          | |
 | 18          | 0012_Command-And-Control | 1206_Download_Use_PwCat.ps1                     |     ✅    |          👎          | Test needed |
-| 19          | 0012_Command-And-Control | 1202_Download_fping.ps1                         |     ✅    |          👍          | |
-| 20          | 0012_Command-And-Control | 1203_Download_And_Install_PSTools.ps1           |     ✅    |          👍          | |
-| 21          | 0012_Command-And-Control | 1204_Download_Several_Compiled_Attack_Tools.ps1 |     ✅    |          👍          | |
-| 22          | 0012_Command-And-Control | 1205_Download_Mimikatz.ps1                      |     ✅    |          👍          | |
-| 23          | 0007_Defense-Evasion     | 7003_Donwload_Winpeas_Using_Bitsadmin.ps1       |     ✅    |          👍          | |
-| 24          | 0007_Defense-Evasion     | 7004_Donwload_SharPersist_Using_Bitsadmin.ps1   |     ✅    |          👍          | |
-| 25          | 0001_Reconnaissance      | 1001_Client_configurations.ps1                  |     ✅    |          👍          | |
-| 26          | 0008_Credential-access   | 8002_SharpKatz.ps1                              |     ✅    |          👎          | |
-| 27          | 0008_Credential-access   | 8003_Better_SafetyKatz.ps1                      |     ✅    |          👎          | |
-| 28          | 0009_Discovery           | 9009_Launch_Soron.ps1                           |     ✅    |          👍          | |
-| 29          | 0009_Discovery           | 9014_Launch_moriarty.ps1                        |     ✅    |          👍          | |
-| 30          | 0009_Discovery           | 9015_Launch_sharpEDRchecker.ps1                 |     ✅    |          👍          | |
-| 31          | 0009_Discovery           | 9010_WinPEAS_Browser_info.ps1                   |     ✅    |          👍          | |
-| 32          | 0009_Discovery           | 9011_WinPEAS_Network_info.ps1                   |     ✅    |          👍          | |
-| 33          | 0009_Discovery           | 9012_WinPEAS_system_info.ps1                    |     ✅    |          👍          | |
-| 34          | 0009_Discovery           | 9013_Subnet_Information_And_Scan.ps1            |     ✅    |          👍          | |
-| 35          | 0008_Credential-access   | 8001_Packet_capture.ps1                         |     ✅    |          👎          | |
-| 36          | 0008_Credential-access   | 8004_Purple_credz_access.ps1                    |     ✅    |          👍          | |
-| 37          | 0004_Execution           | 4002_Transform_capture.ps1                      |     ✅    |          👍          | |
-| 38          | 0004_Execution           | 4003_Purple_Exec.ps1                            |     ✅    |          👍          | |
-| 39          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ✅    |          👍          | |
-| 40          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
-| 41          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
-| 42          | 0005_Persistence         | 5004_Purple_persist.ps1                         |     ✅    |          👍          | |
-| 43          | 0007_Defense-Evasion     | 7005_Purple_evasion.ps1                         |     ✅    |          👍          | |
-| 44          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
-| 45          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
-| 46          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
-| 47          | 0007_Defense-Evasion     | 7006_CreateISO_From_Dir.ps1                     |     ✅    |          👎          | Test Needed |
-| 48          | 0014_Impact              | 1405_Download_note.ps1                          |     ✅    |          👍          | |
-| 49          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
+| 19          | 0009_Discovery           | 9016_Download_Launch_PrivescCheck.ps1           |     ✅    |          👎          | Test needed |
+| 20          | 0012_Command-And-Control | 1202_Download_fping.ps1                         |     ✅    |          👍          | |
+| 21          | 0012_Command-And-Control | 1203_Download_And_Install_PSTools.ps1           |     ✅    |          👍          | |
+| 22          | 0012_Command-And-Control | 1204_Download_Several_Compiled_Attack_Tools.ps1 |     ✅    |          👍          | |
+| 23          | 0012_Command-And-Control | 1205_Download_Mimikatz.ps1                      |     ✅    |          👍          | |
+| 24          | 0007_Defense-Evasion     | 7003_Donwload_Winpeas_Using_Bitsadmin.ps1       |     ✅    |          👍          | |
+| 25          | 0007_Defense-Evasion     | 7004_Donwload_SharPersist_Using_Bitsadmin.ps1   |     ✅    |          👍          | |
+| 26          | 0001_Reconnaissance      | 1001_Client_configurations.ps1                  |     ✅    |          👍          | |
+| 27          | 0008_Credential-access   | 8002_SharpKatz.ps1                              |     ✅    |          👎          | |
+| 28          | 0008_Credential-access   | 8003_Better_SafetyKatz.ps1                      |     ✅    |          👎          | |
+| 29          | 0009_Discovery           | 9009_Launch_Soron.ps1                           |     ✅    |          👍          | |
+| 30          | 0009_Discovery           | 9014_Launch_moriarty.ps1                        |     ✅    |          👍          | |
+| 31          | 0009_Discovery           | 9015_Launch_sharpEDRchecker.ps1                 |     ✅    |          👍          | |
+| 32          | 0009_Discovery           | 9010_WinPEAS_Browser_info.ps1                   |     ✅    |          👍          | |
+| 33          | 0009_Discovery           | 9011_WinPEAS_Network_info.ps1                   |     ✅    |          👍          | |
+| 34          | 0009_Discovery           | 9012_WinPEAS_system_info.ps1                    |     ✅    |          👍          | |
+| 35          | 0009_Discovery           | 9013_Subnet_Information_And_Scan.ps1            |     ✅    |          👍          | |
+| 36          | 0008_Credential-access   | 8001_Packet_capture.ps1                         |     ✅    |          👎          | |
+| 37          | 0008_Credential-access   | 8004_Purple_credz_access.ps1                    |     ✅    |          👍          | |
+| 38          | 0004_Execution           | 4002_Transform_capture.ps1                      |     ✅    |          👍          | |
+| 39          | 0004_Execution           | 4003_Purple_Exec.ps1                            |     ✅    |          👍          | |
+| 40          | 0005_Persistence         | 5001_Add_Scheduled_task.ps1                     |     ✅    |          👍          | |
+| 41          | 0005_Persistence         | 5003_Add_service.ps1                            |     ❗️     |          👎          | |
+| 42          | 0005_Persistence         | 5002_Add_Reg_Key.ps1                            |     ❗️     |          👎          | |
+| 43          | 0005_Persistence         | 5004_Purple_persist.ps1                         |     ✅    |          👍          | |
+| 44          | 0007_Defense-Evasion     | 7005_Purple_evasion.ps1                         |     ✅    |          👍          | |
+| 45          | 0011_Collection          | 1104_Compress_Directory_Content.ps1             |     ✅    |          👍          | |
+| 46          | 0013_Exfiltration        | 1301_Exfiltration_using_scp.ps1                 |     ❗️     |          👎          | |
+| 47          | 0013_Exfiltration        | 1302_Exfiltration_over_ftp.ps1                  |     ❗️     |          👎          | |
+| 48          | 0007_Defense-Evasion     | 7006_CreateISO_From_Dir.ps1                     |     ✅    |          👎          | Test Needed |
+| 49          | 0014_Impact              | 1405_Download_note.ps1                          |     ✅    |          👍          | |
+| 50          | 0014_Impact              | 1403_Change_BackGround.ps1                      |     ✅    |          👍          | |
 
 # Usage
 Please follow the following steps.
