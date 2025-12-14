@@ -3,7 +3,6 @@
 \0004_Execution\4001_Exctract_archive.ps1
 \0007_Defense-Evasion\7002_Patch_Amsi_dll.ps1
 \0006_Privilege_Escalation\6002_Download_Use_SpoolFool.ps1
-\0014_Impact\1401_Create_RamDisk.ps1
 \0007_Defense-Evasion\7001_Impair_defenses.ps1
 \0009_Discovery\9001_Discover_Av.ps1
 \0009_Discovery\9002_Discover_Domain_Controllers.ps1
@@ -46,6 +45,7 @@
 \0011_Collection\1104_Compress_Directory_Content.ps1
 \0013_Exfiltration\1301_Exfiltration_using_scp.ps1
 \0013_Exfiltration\1302_Exfiltration_over_ftp.ps1
+\0007_Defense-Evasion\7006_CreateISO_From_Dir.ps1
 \0014_Impact\1402_Remove_RamDisk.ps1
 \0014_Impact\1405_Donwload_note.ps1
 \0014_Impact\1403_Change_BackGround.ps1
