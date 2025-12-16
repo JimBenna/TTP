@@ -95,7 +95,7 @@ Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
 # Loop to manage each entry in the array.
 foreach ($line in $VulnDriversArray) {
     $Source = $line.UID
-    $Destination = $ligne.DrvName
+    $Destination = $line.DrvName
     DownloadFiles -DonwnloadedFileName $Source -StorageFileName $Destination
     InstallDriver -DriverToInstall $Destination 
 }
