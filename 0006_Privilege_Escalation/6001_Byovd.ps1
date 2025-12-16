@@ -40,14 +40,14 @@ function DownloadFiles {
         Invoke-Expression  "$CompleteCommand";
         Write-Output "Successfully Downloaded file $DownloadedFileName from $DownloadFrom" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;     
         if ([System.IO.File]::Exists("$Full_Destination")) {
-            Write-Output "Successfully Stored file $StorageFileName in $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
+            Write-Output "Successfully Stored file $StorageFileName in $StorageDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
             # Check downloaded file MD5 summ
             $Md5Check = (Get-FileHash -Path $Full_Destination -Algorithm MD5).Hash
             # Compare CheckSumms
             if ($Md5Check -eq $DonwnloadedFileName) {
                 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 Write-Output " [ MD5SUM checks OK ] Stored File name : $StorageFileName" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
-                Write-Output "                     Orignal File name : $DownloadedFileName" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
+                Write-Output "                     Orignal File name : $DonwnloadedFileName.bin" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 Write-Output "                     Computed md5 summ : $Md5Check" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
                 return                                                
@@ -77,7 +77,7 @@ Function InstallDriver {
         [Parameter(Mandatory = $true)]
         [string]$DriverToInstall,
         [Parameter(Mandatory = $false)]
-        [sting]$StoredDriverDir = $StoragePath
+        [string]$StoredDriverDir = $StoragePath
     )
     # sc.exe create amigendrv64.sys binPath=C:\windows\temp\amigendrv64.sys type=kernel && sc.exe start amigendrv64.sys
     $InstallDriver = "sc.exe create " + $DriverToInstall + " binPath=" + $StoredDriverDir + "\" + $DriverToInstall + " type=kernel"
