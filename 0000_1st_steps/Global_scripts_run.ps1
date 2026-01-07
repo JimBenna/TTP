@@ -10,11 +10,12 @@ $InputFile= $PSScriptRoot+"\scripts_list.txt"
 $ParentDirectory = Split-Path -Path $PSScriptRoot -Parent
 $CommandsArray = Get-Content -Path $InputFile
 $PauseTimerInSeconds = "4"
-
+# Maximum numbers of seconds that script is allowed to run before being killed due to timeout
+$MaxTimeoutSec=120
 $LogPath = Join-Path $PSScriptRoot "ScriptLaunch.txt"
 $ErrorLogPath = Join-Path $PSScriptRoot "ErrorScriptLaunch.txt"
 
-
+$PwshExe = if ($PSVersionTable.PSEdition -eq 'Core') {'pwsh'} else  {'powershell.exe'}
 
 # Loops all commands that have been stored in the array
 foreach ($Command in $CommandsArray)
@@ -29,16 +30,29 @@ foreach ($Command in $CommandsArray)
     write-output "Parent Directory : $parentDirectory"
 #    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $FullAccessScript" -WindowStyle Hidden -Wait
 
-    $proc = Start-Process -FilePath "Powershell.exe" -ArgumentList $Arguments -RedirectStandardOutput $LogPath -RedirectStandardError $ErrorLogPath -PassThru -WindowStyle Hidden
-    Write-Output "Started Process PID=$($proc.Id)"
-    #Poll until exit
-    while (-not $proc.HasExited)
+    $Process = Start-Process -FilePath $PwshExe -ArgumentList $Arguments -RedirectStandardOutput $LogPath -RedirectStandardError $ErrorLogPath -PassThru -WindowStyle Hidden
+    Write-Output "Started Process PID = $($Process.Id)"
+    #Poll until exit but takes into account a max timeout
+    $DeadLine = (Get-Date).AddSeconds($MaxTimeoutSec)
+    while (-not $proc.HasExited -and (Get-Date) -lt $DeadLine)
     {
-        Write-Output "$(Get-Date -Format HH:mm:ss) - PID : $($proc.Id) running ..."
+        Write-Output "$(Get-Date -Format HH:mm:ss) - PID : $($Process.Id) running ..."
         Start-Sleep -Seconds $PauseTimerInSeconds
     }
-    Write-Output "Process has exited with code $($proc.ExitCode)"
-    Write-Output "Process has exited after $($proc.ExitTime)"
+if (-not $Process.HasExited) {
+    write-output "`n"
+    Write-Output "Timeout reached (${MaxTimeoutSec}s) seconds. Killing PID $($Process.Id) ..."
+    try {
+        Stop-Process -Id $Process.Id -Force -ErrorAction Stop
+    }
+    catch {
+        Write-Output "Failed to kill process : $_"
+    }
+else {
+    write-host "Process $(Process.Id) ended with code $($Process.ExitCode)"
+}
+}
+
 
     #Displays Outputs
     Write-output "`n"
