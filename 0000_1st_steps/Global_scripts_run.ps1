@@ -43,7 +43,7 @@ foreach ($Command in $CommandsArray)
     #Displays Outputs
     Write-output "`n"
     Write-Output "----- STDOUT -----"; Get-Content $LogPath
-    Write-Output "------------------"; Get-Content $LogPath    
+    Write-Output "------------------";     
     Write-output "`n"
     Write-Output "--- STDERR ---"; Get-Content $ErrorLogPath
     Write-output "`n"
