@@ -36,12 +36,15 @@ foreach ($Command in $CommandsArray)
     {
         Write-Output "$(Get-Date -Format HH:mm:ss) - PID : $($proc.Id) running ..."
         Start-Sleep -Seconds $PauseTimerInSeconds
-        Write-output "`n"
     }
     Write-Output "Process has exited with code $($proc.ExitCode)"
     Write-Output "Process has exited after $($proc.ExitTime)"
 
     #Displays Outputs
-    Write-Output "--- STDOUT ---"; Get-Content $LogPath
+    Write-output "`n"
+    Write-Output "----- STDOUT -----"; Get-Content $LogPath
+    Write-Output "------------------"; Get-Content $LogPath    
+    Write-output "`n"
     Write-Output "--- STDERR ---"; Get-Content $ErrorLogPath
+    Write-output "`n"
 }
