@@ -23,14 +23,13 @@ foreach ($Command in $CommandsArray)
     $Arguments = @(
     '-NoProfile', 
     '-ExecutionPolicy', 'Bypass',
-    '-WindowStyle', 'Hidden',
     '-File',"`"$FullAccessScript`""
     )
     Write-Output "Runing script : $FullAccessScript"
     write-output "Parent Directory : $parentDirectory"
 #    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $FullAccessScript" -WindowStyle Hidden -Wait
 
-    $proc = Start-Process -FilePath "Powershell.exe" -ArgumentList $Arguments -RedirectStandardOutput $LogPath -RedirectStandardError $ErrorLogPath -PassThru 
+    $proc = Start-Process -FilePath "Powershell.exe" -ArgumentList $Arguments -RedirectStandardOutput $LogPath -RedirectStandardError $ErrorLogPath -PassThru -WindowStyle Hidden
     Write-Output "Started Process PID=$($proc.Id)"
     #Poll until exit
     while (-not $proc.HasExited)
