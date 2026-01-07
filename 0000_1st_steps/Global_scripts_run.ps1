@@ -30,7 +30,7 @@ foreach ($Command in $CommandsArray)
     write-output "Parent Directory : $parentDirectory"
 #    Start-Process -FilePath "powershell.exe" -ArgumentList "-Noprofile -File $FullAccessScript" -WindowStyle Hidden -Wait
 
-    $proc = Start-Process -FilePath "Powershell.exe" -ArgumentList $Arguments -RedirectStandardInput $LogPath -RedirectStandardError $ErrorLogPath -PassThru 
+    $proc = Start-Process -FilePath "Powershell.exe" -ArgumentList $Arguments -RedirectStandardOutput $LogPath -RedirectStandardError $ErrorLogPath -PassThru 
     Write-Output "Started Process PID=$($proc.Id)"
     #Poll until exit
     while (-not $proc.HasExited)
