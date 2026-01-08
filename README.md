@@ -34,8 +34,8 @@ The scripts ought to be called in the following order.
 | 15          | 0011_Collection          | 1101_Collect_public_ip_addresses.ps1            |     ✅    |          👍          | |
 | 16          | 0011_Collection          | 1102_SystemInfo.ps1                             |     ✅    |          👍          | |
 | 17          | 0011_Collection          | 1103_Software_List_Discovery.ps1                |     ✅    |          👍          | |
-| 18          | 0012_Command-And-Control | 1206_Download_Use_PwCat.ps1                     |     ✅    |          👎          | Test needed |
-| 19          | 0009_Discovery           | 9016_Download_Launch_PrivescCheck.ps1           |     ✅    |          👎          | Test needed |
+| 18          | 0012_Command-And-Control | 1206_Download_Use_PwCat.ps1                     |     ✅    |          👍          | |
+| 19          | 0009_Discovery           | 9016_Download_Launch_PrivescCheck.ps1           |     ✅    |          👍          | |
 | 20          | 0012_Command-And-Control | 1202_Download_fping.ps1                         |     ✅    |          👍          | |
 | 21          | 0012_Command-And-Control | 1203_Download_And_Install_PSTools.ps1           |     ✅    |          👍          | |
 | 22          | 0012_Command-And-Control | 1204_Download_Several_Compiled_Attack_Tools.ps1 |     ✅    |          👍          | |
