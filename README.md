@@ -100,3 +100,4 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -scope CurrentUser
 ```
 
 Thanks Ercole for your help on correcting scripts.
+:warning: if AMSI is still active some scripts will be blocked and computer should auto-isolate itself.
