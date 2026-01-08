@@ -11,7 +11,7 @@ $ParentDirectory = Split-Path -Path $PSScriptRoot -Parent
 $CommandsArray = Get-Content -Path $InputFile
 $PauseTimerInSeconds = "4"
 # Maximum numbers of seconds that script is allowed to run before being killed due to timeout
-$MaxTimeoutSec=120
+$MaxTimeoutSec=180
 $LogPath = Join-Path $PSScriptRoot "ScriptLaunch.txt"
 $ErrorLogPath = Join-Path $PSScriptRoot "ErrorScriptLaunch.txt"
 
@@ -34,24 +34,25 @@ foreach ($Command in $CommandsArray)
     Write-Output "Started Process PID = $($Process.Id)"
     #Poll until exit but takes into account a max timeout
     $DeadLine = (Get-Date).AddSeconds($MaxTimeoutSec)
-    while (-not $proc.HasExited -and (Get-Date) -lt $DeadLine)
+    while (-not $Process.HasExited -and (Get-Date) -lt $DeadLine)
     {
         Write-Output "$(Get-Date -Format HH:mm:ss) - PID : $($Process.Id) running ..."
         Start-Sleep -Seconds $PauseTimerInSeconds
     }
 if (-not $Process.HasExited) {
     write-output "`n"
-    Write-Output "Timeout reached (${MaxTimeoutSec}s) seconds. Killing PID $($Process.Id) ..."
+    Write-Output "Timeout reached ${MaxTimeoutSec} seconds. Killing PID $($Process.Id) ..."
     try {
         Stop-Process -Id $Process.Id -Force -ErrorAction Stop
     }
     catch {
         Write-Output "Failed to kill process : $_"
     }
+}
 else {
-    write-host "Process $(Process.Id) ended with code $($Process.ExitCode)"
+    write-host "Process $($Process.Id) ended with code $($Process.ExitCode)"
 }
-}
+
 
 
     #Displays Outputs
