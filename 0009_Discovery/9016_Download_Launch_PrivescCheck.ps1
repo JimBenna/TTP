@@ -23,6 +23,6 @@ Write-output "Script : $PSCommandPath has been launched on $TimeStamp" | Out-Fil
 Write-output "-------------------------------------"  | Out-File -FilePath $LogFile -Encoding utf8 -Append
 Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
 $DownloadRun = $ExecuteFrom+"/"+$Ps1ScriptToUse
-Invoke-Expression (New-Object System.Net.WebClient).DownloadString($DownloadRun)
-Invoke-Expression -Command $FullCommandToRun
+Invoke-Expression (New-Object System.Net.WebClient).DownloadString($DownloadRun) | Out-File -FilePath $LogFile -Encoding utf8 -Append
+Invoke-Expression -Command $FullCommandToRun | Out-File -FilePath $LogFile -Encoding utf8 -Append
 
