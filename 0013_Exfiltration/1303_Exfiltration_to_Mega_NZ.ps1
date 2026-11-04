@@ -34,8 +34,8 @@ if ([System.IO.File]::Exists("$FullPathArchive"))
         $MegaShareDir = $LaunchDate+"_"+$HostName;
         cd $ToolsDir
         .\rclone.exe config create $MegaShareDir mega --config $ToolsDir"rclone.conf"
-        set-Content $ToolsDir"rclone.conf" "[$MegaShareDir] `n type = mega `n user = $Username `n pass = $Password"
-        .\rclone.exe copyto "$FullPathArchive" $MegaShareDir:files -vvvv | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
+        set-Content $ToolsDir"rclone.conf" "[$MegaShareDir] `ntype = mega `nuser = $Username `npass = $OPassword"
+        .\rclone.exe --config $ToolsDir"rclone.conf" copyto "$FullPathArchive" $MegaShareDir -vvvvvv | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
         exit 0;
         }
     else 
