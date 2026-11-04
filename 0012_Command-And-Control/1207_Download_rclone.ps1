@@ -6,7 +6,7 @@ Write-Output "Command and Control : Ingress Tool Transfer (T1105)"
 Write-Output "==============================================================================="
 #
 $ArchiveFile = "rclone-current-windows-amd64.zip"
-$DestinationDirectory = "$env:PUBLIC\Toolz"
+$DestinationDirectory = "$env:PUBLIC\toolz\rclone.exe"
 $Full_Destination = "$DestinationDirectory"+"\"+"$ArchiveFile"
 $LogFile = "$env:PUBLIC\exf\rclone_down_extract.txt"; 
 $DownloadURL = "https://downloads.rclone.org/rclone-current-windows-amd64.zip"
