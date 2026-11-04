@@ -16,7 +16,7 @@ try {
     Get-Date | Out-File -FilePath "$LogFile" -Encoding utf8 -Force;
     Write-Output "`n" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append
     Invoke-Expression  "$CompleteCommand";
-    Write-Output "Successfully downloaded [$ArchiveFile] to $DestinationDirectory" | Out-File -FilePath "$LogFile" --Encoding utf8 -Append; 
+    Write-Output "Successfully downloaded [$ArchiveFile] to $DestinationDirectory" | Out-File -FilePath "$LogFile" -Encoding utf8 -Append; 
 
     if ([System.IO.File]::Exists("$Full_Destination")) {
         Add-Type -Assembly 'System.IO.Compression.FileSystem';
